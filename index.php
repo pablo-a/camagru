@@ -1,6 +1,9 @@
 <?php
+//IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
+include_once('connect_bdd.php');
 
-include_once('setup.php');
+//CONNEXION A LA BDD
+$bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
 $querry = $bdd->query('SELECT * FROM animal LIMIT 30');
 echo '<table>';
@@ -10,6 +13,7 @@ while ($data = $querry->fetch())
 	echo '<tr><td>' . $data['nom'] . '</td><td>' . $data['id'] . '</td><td>' .
 		$data['race_id'] .'</td></tr>';
 }
+$querry->closeCursor();
 
 ?>
 

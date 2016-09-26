@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS pablo;
+
+USE pablo;
+
 SET NAMES utf8;
 
 DROP TABLE IF EXISTS Animal;
