@@ -6,28 +6,60 @@ date_default_timezone_set('Europe/Paris');//Set our timezone.
 
 $nb_var = extract($_POST);
 
+$err = 0;  // PAS D'ERREUR PAR DEFAUT.
+
 //CASE THE FORM HAD ALREADY BEEN SENT.
-if ($nb_var) {
-	if (!empty($pseudo) && !empty($mail) && !empty($passwd1) && !empty($passwd2))
+if ($nb_var)
+{
+	include_once('test_form.php');
+
+	// CONNECTION A LA BDD POUR AJOUTER L'UTILISATEUR SI PAS D'ERREUR.
+	if ($err == 0)
 	{
-		echo "tous les champs ont bien été remplis.<br \>";
-		include_once('test_suscribe.php');
-		// CONNECTION A LA BDD POUR AJOUTER L'UTILISATEUR
 		$suscribe = $bdd->prepare('INSERT into user(pseudo, mail, password, creation_time, admin)
-									VALUES (:pseudo, :mail, :password, :creation_time, 0)');
-		$suscribe->execute(array('pseudo' => $pseudo,
-														 'mail' => $mail,
-													 	 'password' => $passwd1,
-													 	 'creation_time' => date("YmdGis"))); // date au format 'YYYYMMDDhhmmss'
-		echo "user ajoute a la bdd";
+																VALUES (:pseudo, :mail, :password, :creation_time, 0)');
+		$insertion = $suscribe->execute(array('pseudo' => $pseudo,
+													 								'mail' => $mail,
+												 	 								'password' => $passwd1,
+												 	 								'creation_time' => date("YmdGis"))); // date au format 'YYYYMMDDhhmmss'
+		if ($insertion == True)
+			redirect("index.php");
+
 	}
-	else {
-		echo "tous les champs doivent être remplis.";
+	else
+	{
+		switch ($err) {
+			case 1:
+				echo '<h1>certains champs ne sont pas remplis.</h1>';
+				break;
+
+			case 2:
+			echo '<h1>les mots de passe sont differents.</h1>';
+			break;
+
+			case 3:
+			echo '<h1>pseudo deja pris.</h1>';
+			break;
+
+			case 4:
+			echo '<h1>mail deja pris.</h1>';
+			break;
+
+			case 5:
+			echo '<h1>un des champs est trop long.</h1>';
+			break;
+
+			case 6:
+			echo '<h1>Caracteres interdits</h1>';
+			break;
+
+			default:
+				break;
+		}
 	}
 }
 
 //CASE FORM HASNT BEEN SENT.
-else {
 ?>
 
 <!DOCTYPE HTML>
@@ -36,11 +68,10 @@ else {
 		<title>okok</title>
 	</head>
 	<body>
-		okok
 	<form action="suscribe.php" method="post" accept-charset="utf-8">
-		<input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required/>
+		<input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required value=<?php echo '"' . $pseudo . '"'; ?>/>
 	<br />
-		<input type="email" name="mail" id="mail" placeholder="mail"/>
+		<input type="email" name="mail" id="mail" placeholder="mail" value = <?php echo '"' . $mail . '"'; ?>/>
 	<br />
 		<input type="password" name="passwd1" id="passwd1" placeholder="mot de passe" pattern=".{6,}"/>
 	<br />
@@ -50,5 +81,3 @@ else {
 	</form>
 	</body>
 </html>
-
-<?php } ?>
