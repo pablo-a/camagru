@@ -1,6 +1,8 @@
 <?php
 include_once('redirect.php');
 include_once('connect_bdd.php');
+
+
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 date_default_timezone_set('Europe/Paris');//Set our timezone.
 
@@ -20,7 +22,7 @@ if ($nb_var)
 																VALUES (:pseudo, :mail, :password, :creation_time, 0)');
 		$insertion = $suscribe->execute(array('pseudo' => $pseudo,
 													 								'mail' => $mail,
-												 	 								'password' => $passwd1,
+												 	 								'password' => hash("whirlpool", $passwd1),
 												 	 								'creation_time' => date("YmdGis"))); // date au format 'YYYYMMDDhhmmss'
 		if ($insertion == True)
 			redirect("index.php");
@@ -69,13 +71,13 @@ if ($nb_var)
 	</head>
 	<body>
 	<form action="suscribe.php" method="post" accept-charset="utf-8">
-		<input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required value=<?php echo '"' . $pseudo . '"'; ?>/>
+		Pseudo : <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required value=<?php echo '"' . $pseudo . '"'; ?>/>
 	<br />
-		<input type="email" name="mail" id="mail" placeholder="mail" value = <?php echo '"' . $mail . '"'; ?>/>
+		Mail : <input type="email" name="mail" id="mail" placeholder="mail" value = <?php echo '"' . $mail . '"'; ?>/>
 	<br />
-		<input type="password" name="passwd1" id="passwd1" placeholder="mot de passe" pattern=".{6,}"/>
+		Mot de passe : <input type="password" name="passwd1" id="passwd1" placeholder="mot de passe" pattern=".{6,}"/>
 	<br />
-		<input type="password" name="passwd2" id="passwd2" placeholder="confirmation mot de passe" size="30" pattern=".{6,}"/>
+		Repeter le mdp : <input type="password" name="passwd2" id="passwd2" placeholder="confirmation mot de passe" size="30" pattern=".{6,}"/>
 	<br />
 		<input type="submit" name="submit" id="sub" value="OK" />
 	</form>
