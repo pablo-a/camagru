@@ -18,6 +18,7 @@
 		</div>
 		<div class="body">
 			<h1>co a la bdd</h1>
+			<a href="suscribe.php">suscribe</a>
 			<br /><br /><br />
 <?php
 //IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
@@ -26,13 +27,13 @@ include_once('connect_bdd.php');
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
-$querry = $bdd->query('SELECT * FROM animal');
+$querry = $bdd->query('SELECT * FROM user');
 echo '<table>';
-echo '<tr><th>nom</th><th>id</th></tr>';
+echo '<tr><th>nom</th><th>id</th><th>mail</th></tr>';
 while ($data = $querry->fetch())
 {
-	echo '<tr><td>' . $data['nom'] . '</td><td>' . $data['id'] . '</td><td>' .
-		$data['race_id'] .'</td></tr>';
+	echo '<tr><td>' . $data['id'] . '</td><td>' . $data['pseudo'] . '</td><td>' .
+		$data['mail'] .'</td></tr>';
 }
 $querry->closeCursor();
 

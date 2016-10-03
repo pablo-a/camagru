@@ -6,7 +6,7 @@ function connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD)
 {
 	try
 	{
-		$bdd = new PDO($DB_DSN . ";dbname=pablo", $DB_USER, $DB_PASSWORD,
+		$bdd = new PDO($DB_DSN . ";dbname=camagru", $DB_USER, $DB_PASSWORD,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		return ($bdd);
 	}

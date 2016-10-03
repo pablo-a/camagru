@@ -1,7 +1,7 @@
 <?php
 
 // RECUPERER LES IDENTIFIANTS DE LA BDD
-include_once('database.php');
+include_once('config/database.php');
 
 //CONNEXION A LA BDD. QUITTE EN CAS DE FAIL.
 try {
@@ -15,7 +15,7 @@ catch (PDOException $e) {
 
 //REMPLISSAGE DE LA BASE DE DONNEE
 
-$bdd->query(file_get_contents('config/setup.sql'));
+$bdd->query(file_get_contents('config/good_setup.sql'));
 
 
 ?>
