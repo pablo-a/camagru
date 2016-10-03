@@ -32,7 +32,7 @@ echo '<table>';
 echo '<tr><th>nom</th><th>id</th><th>mail</th></tr>';
 while ($data = $querry->fetch())
 {
-	echo '<tr><td>' . $data['id'] . '</td><td>' . $data['pseudo'] . '</td><td>' .
+	echo '<tr><td>' . $data['id'] . '</td><td>' . htmlspecialchars($data['pseudo']) . '</td><td>' .
 		$data['mail'] .'</td></tr>';
 }
 $querry->closeCursor();
