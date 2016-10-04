@@ -23,9 +23,13 @@ if ($nb_var)
 		$insertion = $suscribe->execute(array('pseudo' => $pseudo,
 													 								'mail' => $mail,
 												 	 								'password' => hash("whirlpool", $passwd1),
-												 	 								'creation_time' => date("YmdGis"))); // date au format 'YYYYMMDDhhmmss'
+												 	 								'creation_time' => date("YmdHis"))); // date au format 'YYYYMMDDhhmmss'
+		$suscribe->closeCursor();
 		if ($insertion == True)
-			redirect("index.php");
+			redirect("index.php?sus=ok");
+		else {
+			echo '<h1> Erreur de la base de donnée, reesayez plus tard.';
+		}
 
 	}
 	else
@@ -52,7 +56,11 @@ if ($nb_var)
 			break;
 
 			case 6:
-			echo '<h1>Caracteres interdits</h1>';
+			echo '<h1>Caracteres interdits dans le pseudo (only letters and numbers)</h1>';
+			break;
+
+			case 7:
+			echo '<h1>mail non valide</h1>';
 			break;
 
 			default:

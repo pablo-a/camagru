@@ -3,6 +3,14 @@
 	<head>
 		<title>CAMAGRU</title>
 		<link rel="stylesheet" href="css/index.css" title="pablo" type="text/css" />
+		<script type="text/javascript">
+			function show_signin() {
+				document.getElementById("connexion").style.display = "block";
+			}
+			function hide_signin() {
+				document.getElementById("connexion").style.display = "none";
+			}
+		</script>
 	</head>
 	<body>
 		<header>
@@ -10,15 +18,34 @@
 		</header>
 		<div class="navigation">
 			<ul>
-				<li><a class="active" href="#home">HOME</a></li>
-				<li><a href="#news">MONTAGE</a></li>
-				<li><a href="#contact">GALLERIE</a></li>
+				<li><a class="active" href="index.php">HOME</a></li>
+				<li><a href="montage.php">MONTAGE</a></li>
+				<li><a href="gallerie.php">GALLERIE</a></li>
 				<li><a href="#about">ABOUT</a></li>
+				<li class="right"><a href="suscribe.php">INSCRIPTION</a></li>
+				<li class="right"><a href="#connect.php" onclick="show_signin()">CONNEXION</a></li>
 			</ul>
 		</div>
+
 		<div class="body">
+
+			<div id="connexion">
+				<p>CONNEXION</p>
+				<a href="#"><img src="img/red_cross.png" alt="quit" onclick="hide_signin()" width="30px" height="30px"/></a>
+				<form class="connexion" action="index.php" method="post">
+						<input type="text" name="pseudo" placeholder="pseudo">
+						<input type="password" name="passwd" placeholder="password">
+						<input type="submit" name="submit" value="OK">
+				</form>
+				<div id="other">
+					<a href="suscribe.php">Je n'ai pas de compte</a>  |
+					<a href="#">Mot de passe oublié</a>
+				</div>
+
+			</div>
+
 			<h1>co a la bdd</h1>
-			<a href="suscribe.php">suscribe</a>
+			<?php if (isset($_GET['sus'])) {echo "<h3>Votre inscription a bien ete prise en compte.</h3>";} ?>
 			<br /><br /><br />
 <?php
 //IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
