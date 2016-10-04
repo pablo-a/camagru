@@ -74,6 +74,10 @@ li.right {
 	float: right;
 }
 
+li.hidden {
+	display: none;
+}
+
 li a {
 	display: block;
 	color: white;
@@ -89,6 +93,8 @@ li a:hover {
 a.active {
 	background-color: #4CAF50;
 }
+
+
 
 #connexion {
 	height: 200px;
