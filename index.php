@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once("connect_bdd.php");
 
 function display_connected()
@@ -40,9 +41,9 @@ function display_deconnected()
 				<li><a class="active" href="index.php">HOME</a></li>
 				<li><a href="montage.php">MONTAGE</a></li>
 				<li><a href="gallerie.php">GALLERIE</a></li>
-				<li><a href="#about">ABOUT</a></li>
+				<li><a href="#?sus=ok">ABOUT</a></li>
 				<li class="right"><a href="suscribe.php">INSCRIPTION</a></li>
-				<li class="right" id="not_connected"><a href="#connect.php" onclick="show_signin()">CONNEXION</a></li>
+				<li class="right" id="not_connected"><a href="#" onclick="show_signin()">CONNEXION</a></li>
 				<li class="right hidden" id="connected"><a href="index.php?signin=out">DECONNEXION</a></li>
 			</ul>
 		</div>
@@ -83,7 +84,7 @@ while ($data = $querry->fetch())
 		$data['mail'] .'</td></tr>';
 }
 $querry->closeCursor();
-
+echo substr_replace($_SERVER['PHP_SELF'], "", 0, 9); //Permet de trouver la page actuelle -> utiloser pour les boutons de connexion et deco pour pouvoir les utiliser dans toues les pages.
 if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 {
 
@@ -95,8 +96,12 @@ if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 			if ((int)$search_user->rowCount() == 1 )
 			{
 				$result = $search_user->fetch();
-				if ($result['passwd'] == hash("whirlpool", $_POST['passwd']))
-						display_deconnected();
+				if ($result['password'] == hash("whirlpool", $_POST['passwd']))
+				{
+					display_deconnected();
+					$_SESSION['user_name'] = $_POST['pseudo'];
+				}
+
 				else {
 						echo "<h2>Bad Password</h2>";
 				}
@@ -104,7 +109,6 @@ if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 			else {
 				echo "<h2>Error, User not found.</h2>";
 			}
-
 	}
 	else {
 			echo "<h2>veuillez remplir tous les champs.</h2>";
@@ -113,6 +117,7 @@ if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 
 if (isset($_GET['signin']) && $_GET['signin'] == 'out')
 {
+		$_SESSION['user_name'] = "";
 		display_connected();
 }
 ?>
