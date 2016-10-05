@@ -22,7 +22,17 @@ session_start();
 		<div class="body">
 			<?php include_once("include/signin.php"); //Formulaire de connexion ?>
 
-			<?php if (isset($_GET['sus']) && $_GET['sus'] == "ok") {echo "<h3>Votre inscription a bien ete prise en compte.</h3>";} ?>
+			<?php  	if (isset($_GET['sus']) && $_GET['sus'] == "link")
+					{
+						echo "<h3>Votre inscription a bien ete prise en compte. Veuillez
+						trouver le lien de confirmation dans votre boite mail</h3>";
+					}
+					else if (isset($_GET['sus']) && $_GET['sus'] == "activate")
+					{
+						echo "<h3>votre compte est actif !</h3>";
+						// TODO changer la base de donnee.
+					}
+			 ?>
 			<br />
 			<div class="footer">
 				<p>pabril copyright</p>

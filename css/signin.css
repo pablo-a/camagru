@@ -1,7 +1,7 @@
 #connexion {
 	height: 200px;
 	background-color: #CCC;
-	border: 1px solid black;
+	border-bottom: 1px solid black;
 	display: none;
 }
 

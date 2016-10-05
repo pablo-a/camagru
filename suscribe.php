@@ -2,6 +2,14 @@
 include_once('redirect.php');
 include_once('connect_bdd.php');
 
+function send_confirmation_link($pseudo, $mail)
+{
+	$subject = "Confirmation de votre compte Camagru";
+	$content = "bonjour voila votre lien de Confirmation :\n" . $_SERVER['SERVER_NAME'] .
+	":8080" . "/camagru/index.php?sus=activate&pseudo=" . $pseudo;
+	mail($mail, $subject, $content);
+}
+
 
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 date_default_timezone_set('Europe/Paris');//Set our timezone.
@@ -18,15 +26,18 @@ if ($nb_var)
 	// CONNECTION A LA BDD POUR AJOUTER L'UTILISATEUR SI PAS D'ERREUR.
 	if ($err == 0)
 	{
-		$suscribe = $bdd->prepare('INSERT into user(pseudo, mail, password, creation_time, admin)
-																VALUES (:pseudo, :mail, :password, :creation_time, 0)');
+		$suscribe = $bdd->prepare('INSERT into user(pseudo, mail, password, creation_time, active, admin)
+								VALUES (:pseudo, :mail, :password, :creation_time, 0, 0)');
 		$insertion = $suscribe->execute(array('pseudo' => $pseudo,
-													 								'mail' => $mail,
-												 	 								'password' => hash("whirlpool", $passwd1),
-												 	 								'creation_time' => date("YmdHis"))); // date au format 'YYYYMMDDhhmmss'
+												'mail' => $mail,
+												'password' => hash("whirlpool", $passwd1),
+												'creation_time' => date("YmdHis"))); // date au format 'YYYYMMDDhhmmss'
 		$suscribe->closeCursor();
 		if ($insertion == True)
-			redirect("index.php?sus=ok");
+		{
+			send_confirmation_link($pseudo, $mail);
+			redirect("index.php?sus=link");
+		}
 		else {
 			echo '<h1> Erreur de la base de donnée, reesayez plus tard.';
 		}
