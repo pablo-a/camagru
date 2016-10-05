@@ -14,6 +14,31 @@
         <?php include_once("include/navbar.php"); ?>
         <div class="body">
             <?php include_once("include/signin.php"); ?>
+            <div class="montage">
+                <div class="main">
+                    <h2>montage</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                </div>
+                <div class="pictures">
+                    <h2>photos</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                    <h2>okok</h2>
+                </div>
+                <div class="test">
+                    <h2>okok</h2>
+                </div>
+            </div>
         </div>
 
     </body>
