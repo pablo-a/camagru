@@ -16,11 +16,11 @@ session_start();
 	</head>
 	<body>
 
-		<?php include_once("header.php"); // C'est le header ?>
-		<?php include_once("navbar.php"); // C'est la barre de navigation ?>
+		<?php include_once("include/header.php"); // C'est le header ?>
+		<?php include_once("include/navbar.php"); // C'est la barre de navigation ?>
 
 		<div class="body">
-			<?php include_once("signin.php"); //Formulaire de connexion ?>
+			<?php include_once("include/signin.php"); //Formulaire de connexion ?>
 
 			<?php if (isset($_GET['sus']) && $_GET['sus'] == "ok") {echo "<h3>Votre inscription a bien ete prise en compte.</h3>";} ?>
 			<br />

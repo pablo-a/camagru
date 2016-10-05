@@ -10,10 +10,10 @@
         <link rel="stylesheet" href="css/montage.css" type="text/css" />
     </head>
     <body>
-        <?php include_once("header.php"); ?>
-        <?php include_once("navbar.php"); ?>
+        <?php include_once("include/header.php"); ?>
+        <?php include_once("include/navbar.php"); ?>
         <div class="body">
-            <?php include_once("signin.php"); ?>
+            <?php include_once("include/signin.php"); ?>
         </div>
 
     </body>

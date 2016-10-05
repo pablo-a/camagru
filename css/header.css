@@ -10,10 +10,11 @@ header {
 	height: 35px;
 	text-align: center;
 	text-decoration: underline;
-	background-color: orange;
+	background-color: green;
 	padding-top: 8px;
 }
 
 header a {
 	margin: auto;
+	color: white;
 }
