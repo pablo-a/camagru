@@ -1,5 +1,11 @@
 <header>
-    <a href="#home">SALUT C'est le CAMAGRU</a>
+    <a href="#home">CAMAGRU</a>
+    <?php
+        if (isset($_SESSION['user_name']) && (string)$_SESSION['user_name'] !== "none")
+        {
+            echo "<span id='hello'>Salut " . htmlspecialchars($_SESSION['user_name']) . " !</span>";
+        }
+    ?>
 </header>
 
 <?php

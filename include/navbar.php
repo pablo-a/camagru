@@ -17,14 +17,18 @@
 
 function display_connected()
 {
-	echo '<script>document.getElementById("connected").style.display = "none";
-								document.getElementById("not_connected").style.display = "block";</script>';
+	echo'<script>document.getElementById("connected").style.display = "none";
+			    document.getElementById("not_connected").style.display = "block";
+                document.getElementById("hello").style.display = "none";
+        </script>';
 }
 
 function display_deconnected()
 {
 	echo '<script>document.getElementById("connected").style.display = "block";
-								document.getElementById("not_connected").style.display = "none";</script>';
+		document.getElementById("not_connected").style.display = "none";
+        document.getElementById("hello").style.display = "inline";
+        </script>';
 }
 
  ?>

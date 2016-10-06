@@ -128,7 +128,7 @@ if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 //	PARTIE POUR LA DECONNEXION
 else if (isset($_GET['signin']) && $_GET['signin'] == 'out')
 {
-		$_SESSION['user_name'] = "";
+		$_SESSION['user_name'] = "none";
 		display_connected();
 }
 ?>
