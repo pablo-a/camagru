@@ -15,7 +15,7 @@ catch (PDOException $e) {
 
 //REMPLISSAGE DE LA BASE DE DONNEE
 
-$bdd->query(file_get_contents('config/good_setup.sql'));
+$bdd->query(file_get_contents('config/setup.sql'));
 
 
 ?>
