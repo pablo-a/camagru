@@ -5,6 +5,19 @@ include_once('connect_bdd.php');
 
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
+
+function user_exists($pseudo, $bdd)
+{
+	$query_search_user = $bdd->prepare("SELECT * FROM user WHERE pseudo = ?");
+	$query_search_user->execute(array($pseudo));
+	$result_query = $query_search_user->fetch();
+	$query_search_user->closeCursor();
+	if ($result_query['pseudo'] === $pseudo)
+	{
+		return True;
+	}
+	return False;
+}
 ?>
 
 
@@ -26,18 +39,6 @@ $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
 		<div class="body">
 			<?php include_once("include/signin.php"); //Formulaire de connexion ?>
-
-			<?php  	if (isset($_GET['sus']) && $_GET['sus'] == "link")
-					{
-						echo "<h3>Votre inscription a bien ete prise en compte. Veuillez
-						trouver le lien de confirmation dans votre boite mail</h3>";
-					}
-					else if (isset($_GET['sus']) && $_GET['sus'] == "activate")
-					{
-						echo "<h3>votre compte est actif !</h3>";
-						// TODO changer la base de donnee.
-					}
-			 ?>
 			<br />
 			<div class="footer">
 				<p>pabril copyright</p>
@@ -46,19 +47,52 @@ $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 	</body>
 </html>
 
+
+<?php // TOUT CE QUI CONCERNE ACTIVATION DE COMPTE.
+
+		if (isset($_GET['sus']) && $_GET['sus'] == "link")
+		{
+			echo "<h3>Votre inscription a bien ete prise en compte. Veuillez
+			trouver le lien de confirmation dans votre boite mail</h3>";
+		}
+		else if (isset($_GET['sus']) && $_GET['sus'] == "activate" && isset($_GET['pseudo']) && !empty($_GET['pseudo']))
+		{
+			if (user_exists($_GET['pseudo'], $bdd))
+			{
+				$query_activate_account = $bdd->prepare("UPDATE user set active = 1 where pseudo = ?");
+				$result_query = $query_activate_account->execute(array($_GET['pseudo']));
+				$query_activate_account->closeCursor();
+				if (!$result_query)
+				{
+					echo "<h2>Erreur lors de l'activation de votre compte. reessayez ulterieurement.";
+				}
+				else {
+					echo "<h3>votre compte est actif !</h3>";
+				}
+			}
+			else {
+				echo "<h3>Le compte a activer n'est pas dans la base de donnee.</h3>";
+			}
+		}
+ ?>
+
+
 <?php
 
 //AFFICHE TOUS LES USERS DANS UN TABLEAU
 // TODO: enlever cette partie plus tard pour mettre un carroussel d'images.
-$querry = $bdd->query('SELECT * FROM user');
+$query = $bdd->query('SELECT * FROM user');
 echo '<table>';
 echo '<tr><th>nom</th><th>id</th><th>mail</th></tr>';
-while ($data = $querry->fetch())
+while ($data = $query->fetch())
 {
 	echo '<tr><td>' . $data['id'] . '</td><td>' . htmlspecialchars($data['pseudo']) . '</td><td>' .
 		$data['mail'] .'</td></tr>';
 }
-$querry->closeCursor();
+$query->closeCursor();
+
+
+
 
 //	PARTIE CONCERNANT LA CONNEXION.
 if (isset($_GET['signin']) && $_GET['signin'] == 'in')
@@ -92,7 +126,7 @@ if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 }
 
 //	PARTIE POUR LA DECONNEXION
-if (isset($_GET['signin']) && $_GET['signin'] == 'out')
+else if (isset($_GET['signin']) && $_GET['signin'] == 'out')
 {
 		$_SESSION['user_name'] = "";
 		display_connected();
