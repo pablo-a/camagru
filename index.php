@@ -1,5 +1,10 @@
 <?php
 session_start();
+//IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
+include_once('connect_bdd.php');
+
+//CONNEXION A LA BDD
+$bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 ?>
 
 
@@ -42,11 +47,6 @@ session_start();
 </html>
 
 <?php
-//IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
-include_once('connect_bdd.php');
-
-//CONNEXION A LA BDD
-$bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
 //AFFICHE TOUS LES USERS DANS UN TABLEAU
 // TODO: enlever cette partie plus tard pour mettre un carroussel d'images.

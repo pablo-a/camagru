@@ -4,9 +4,12 @@ include_once('connect_bdd.php');
 
 function send_confirmation_link($pseudo, $mail)
 {
-	$subject = "Confirmation de votre compte Camagru";
-	$content = "bonjour voila votre lien de Confirmation :\n" . $_SERVER['SERVER_NAME'] .
-	":8080" . "/camagru/index.php?sus=activate&pseudo=" . $pseudo;
+	$pattern = "/\/suscribe(.)*/";
+	$replace = "/";
+	$path = $_SERVER['SERVER_NAME'] . ":8080" . preg_replace( $pattern, $replace, $_SERVER['PHP_SELF']);
+
+	$subject = "Activation de votre compte Camagru";
+	$content = "bonjour voila votre lien de Confirmation :\n" . $path . "index.php?sus=activate&pseudo=" . $pseudo;
 	mail($mail, $subject, $content);
 }
 
