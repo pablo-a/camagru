@@ -129,6 +129,7 @@ if (isset($_GET['signin']) && $_GET['signin'] == 'in')
 else if (isset($_GET['signin']) && $_GET['signin'] == 'out')
 {
 		$_SESSION['user_name'] = "none";
+
 		display_connected();
 }
 ?>
