@@ -1,3 +1,11 @@
+<?php
+session_start();
+//IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
+include_once('connect_bdd.php');
+
+//CONNEXION A LA BDD
+$bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
+ ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,3 +51,13 @@
 
     </body>
 </html>
+
+<?php
+// PARTIE CONNEXION/DECONNEXION
+
+if (isset($_GET['signin']) && isset($_POST['pseudo']) && isset($_POST['passwd']))
+{
+	signin($_GET['signin'], $_POST['pseudo'], $_POST['passwd'], $bdd);
+}
+
+ ?>

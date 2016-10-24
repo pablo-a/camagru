@@ -94,42 +94,9 @@ $query->closeCursor();
 
 
 
-//	PARTIE CONCERNANT LA CONNEXION.
-if (isset($_GET['signin']) && $_GET['signin'] == 'in')
+//	PARTIE CONCERNANT LA CONNEXION / DECONNEXION.
+if (isset($_GET['signin']) && isset($_POST['pseudo']) && isset($_POST['passwd']))
 {
-
-	if (!empty($_POST['pseudo']) && !empty($_POST['passwd']))
-	{
-		$requete = "SELECT * FROM User WHERE pseudo = ?";
-		$search_user = $bdd->prepare($requete);
-		$search_user->execute(array($_POST['pseudo']));
-		if ((int)$search_user->rowCount() == 1 )
-		{
-			$result = $search_user->fetch();
-			if ($result['password'] == hash("whirlpool", $_POST['passwd']))
-			{
-				display_deconnected();
-				$_SESSION['user_name'] = $_POST['pseudo'];
-				echo "<h2>Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !";
-			}
-			else {
-					echo "<h2>Bad Password</h2>";
-			}
-		}
-		else {
-			echo "<h2>Error, User not found.</h2>";
-		}
-	}
-	else {
-			echo "<h2>veuillez remplir tous les champs.</h2>";
-	}
-}
-
-//	PARTIE POUR LA DECONNEXION
-else if (isset($_GET['signin']) && $_GET['signin'] == 'out')
-{
-		$_SESSION['user_name'] = "none";
-
-		display_connected();
+	signin($_GET['signin'], $_POST['pseudo'], $_POST['passwd'], $bdd);
 }
 ?>
