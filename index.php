@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['user_name']))
+{
+	$_SESSION['user_name'] = "";
+}
+
 //IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
 include_once('connect_bdd.php');
 
@@ -93,10 +98,4 @@ $query->closeCursor();
 
 
 
-
-//	PARTIE CONCERNANT LA CONNEXION / DECONNEXION.
-if (isset($_GET['signin']) && isset($_POST['pseudo']) && isset($_POST['passwd']))
-{
-	signin($_GET['signin'], $_POST['pseudo'], $_POST['passwd'], $bdd);
-}
 ?>

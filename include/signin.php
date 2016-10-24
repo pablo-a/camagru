@@ -1,4 +1,4 @@
-<?php 
+<?php
 //INCLURE <link rel="stylesheet" href="css/signin.css" type="text/css" />
 ?>
 
@@ -18,9 +18,14 @@
 </div>
 <?php
 
-
-function signin($signin, $pseudo, $passwd, $bdd)
-{
+    if (!empty($_SESSION['user_name']))
+    {
+    	display_deconnected();
+    }
+    else if ($_SESSION['user_name'] === "")
+    {
+        display_connected();
+    }
     //CONNEXION
     if (isset($_GET['signin']) && $_GET['signin'] == 'in')
     {
@@ -39,6 +44,7 @@ function signin($signin, $pseudo, $passwd, $bdd)
     				{
     					display_deconnected();
     					$_SESSION['user_name'] = $_POST['pseudo'];
+                        unset($_POST);
     					echo "<h2>Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !";
     				}
     				else {
@@ -57,14 +63,11 @@ function signin($signin, $pseudo, $passwd, $bdd)
     			echo "<h2>veuillez remplir tous les champs.</h2>";
     	}
     }
-    // DECONNEXION
-    else if (isset($_GET['signin']) && $_GET['signin'] == 'out')
+    else if (isset($_GET['signin']) && $_GET['signin'] == 'out') //DECONNEXION
     {
-    		$_SESSION['user_name'] = "none";
-
+    		$_SESSION['user_name'] = "";
     		display_connected();
     }
-}
 
 
  ?>
