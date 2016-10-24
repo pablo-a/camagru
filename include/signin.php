@@ -12,8 +12,12 @@
   </form>
   <div id="other">
     <a href="suscribe.php">Je n'ai pas de compte</a>  |
-    <a href="#">Mot de passe oublié</a>
+    <a href="reset_pwd.php" >Mot de passe oublié</a>
   </div>
+  <form class="forgotpwd"  style="display:inline;" action="<?php echo substr_replace($_SERVER['PHP_SELF'], "", 0, 9) . "?forgotpwd=1";?>" method="post">
+        <input type="text" name="mail" placeholder="mail">
+        <input type="submit" name="submit" value="envoyer">
+  </form>
 
 </div>
 <?php
