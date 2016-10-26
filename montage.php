@@ -24,24 +24,27 @@ $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
             <?php include_once("include/signin.php"); ?>
             <div class="montage">
                 <div class="main">
-                    <h2>montage</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
+                    <div class="filtres">
+                        <p>
+                            filtres.
+                        </p>
+                    </div>
+                    <div class="webcam">
+                        <p>
+                            webcam.
+                        </p>
+                    </div>
                 </div>
                 <div class="pictures">
-                    <h2>photos</h2>
+                    <h2>mes jolies photos</h2>
+                    <img src="../orange.jpg" alt="ma photo d'orange" />
+                    <img src="../orange.jpg" alt="ma photo d'orange" />
+                    <img src="../orange.jpg" alt="ma photo d'orange" />
+                    <img src="../orange.jpg" alt="ma photo d'orange" />
+                    <img src="../orange.jpg" alt="ma photo d'orange" />
+                    <img src="../orange.jpg" alt="ma photo d'orange" />
                     <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
-                    <h2>okok</h2>
+
                 </div>
                 <div class="test">
                     <h2>okok</h2>

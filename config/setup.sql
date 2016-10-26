@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS image (
 	location VARCHAR(100) NOT NULL,              -- "path/to/file"
 	owner INT UNSIGNED NOT NULL,
 	creation_time DATETIME NOT NULL,
-	publication_time DATETIME NOT NULL,
 	comments_nb INT NOT NULL DEFAULT 0,
 	likes_nb INT NOT NULL DEFAULT 0,
 	name VARCHAR(30) NOT NULL,                   -- champ facultatif
@@ -41,7 +40,7 @@ CREATE TABLE IF NOT EXISTS comment (
 	author INT UNSIGNED NOT NULL,         -- auteur du commentaire
 	creation_time DATETIME NOT NULL,
 	image_origin INT UNSIGNED NOT NULL,   -- image liée au commentaire
-	comment_origin INT UNSIGNED ,         -- nested comments (facultatif)
+	comment_origin INT UNSIGNED,         -- nested comments (facultatif)
 	PRIMARY KEY (id),
 	CONSTRAINT fk_comment_author FOREIGN KEY (author) REFERENCES user(id),
 	CONSTRAINT fk_comment_image FOREIGN KEY (image_origin) REFERENCES image(id)

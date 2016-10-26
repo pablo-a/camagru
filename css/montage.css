@@ -29,6 +29,11 @@
     border-radius: 10px;
     background-color: #99FF99;
     box-shadow: 0 0 2em black;
+	overflow-y: auto;
+}
+
+.filtres , .webcam {
+	border: 1px solid black;
 }
 
 .test {
