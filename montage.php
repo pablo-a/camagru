@@ -5,6 +5,19 @@ include_once('connect_bdd.php');
 
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
+
+if (extract($_POST))
+{
+    $hidden = str_replace(' ', '+', $hidden);
+    $file_content = base64_decode($hidden);
+    file_put_contents("img/test.png", $file_content);
+    $bdd->query("INSERT INTO image (location, owner, creation_time, name)
+                VALUES ('img/test.png', 2, 20000101000000, 'pablo')");
+}
+else {
+    echo "<h2>NONNONNNON</h2>";
+}
+
  ?>
 <!DOCTYPE html>
 <html>
@@ -38,35 +51,38 @@ $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
                         </div>
 
                     	<button id="snap">Take Photo</button>
-                        <button id="save_photo" class="hidden">save photo</button>
+                        <form class="" action="#" method="post">
+                            <input type="hidden" name="hidden" id="hidden" value="">
+                            <button id="save_photo" class="hidden">save photo</button>
+                        </form>
+
                         <button id="back_webcam" class="hidden">back to webcam</button>
 
                     </div>
                 </div>
                 <div class="pictures">
                     <h2>mes jolies photos</h2>
-                    <img src="#" alt="test" id="cam" />
                     <?php
-
+/*
+                        // script pour afficher les photos de l'utilisateur.
                         $requete_cherche_photos = "SELECT * from image WHERE owner = (SELECT id from user where pseudo = ?)";
                         $query_photos = $bdd->prepare($requete_cherche_photos);
                         $query_photos->execute(array($_SESSION['user_name']));
                         while ($row = $query_photos->fetch())
                         {
-                            echo '<img src="' . $row['location'] . '" alt="mes photos" />';
+                            echo '<img src="' . file_get_contents($row['location']) . '" alt="mes photos" class="mini_photos"/>';
                         }
                         $query_photos->closeCursor();
-
-
+                        */
                      ?>
 
-                    <img src="../orange.jpg" alt="ma photo d'orange" />
-                    <img src="../orange.jpg" alt="ma photo d'orange" />
-                    <img src="../orange.jpg" alt="ma photo d'orange" />
-                    <img src="../orange.jpg" alt="ma photo d'orange" />
-                    <img src="../orange.jpg" alt="ma photo d'orange" />
-                    <img src="../orange.jpg" alt="ma photo d'orange" />
-                    <h2>okok</h2>
+                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
+                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
+                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
+                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
+                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
+                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
+                    <img src="#" class="mini_photos" id="cam" />
 
                 </div>
                 <div class="test">

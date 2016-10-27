@@ -54,6 +54,9 @@ window.addEventListener("DOMContentLoaded", function() {
 
     save_photo.addEventListener('click', function() {
         var img = canvas.toDataURL();
+        var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
+        //var output = img.replace(/^data:image\/(png|jpg);base64,/, "");
+        document.getElementById('hidden').value = output;
         document.getElementById('cam').src = img;
     });
 }, false);
