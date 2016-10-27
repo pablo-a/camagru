@@ -32,8 +32,29 @@
 	overflow-y: auto;
 }
 
-.filtres , .webcam {
-	border: 1px solid black;
+.filtres {
+	height: 16%;
+	padding: : 5% 0;
+	margin: 20px;
+	background-color: red;
+	border-radius: 10px;
+	box-shadow: 0 0 2em red;
+}
+
+#video, #canvas {
+	margin: 2% 25%;
+}
+
+button {
+	margin: 1% 45%;
+}
+
+.webcam {
+	overflow-x: auto;
+}
+
+.hidden {
+	display: none;
 }
 
 .test {
