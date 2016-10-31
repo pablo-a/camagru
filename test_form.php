@@ -12,7 +12,7 @@ if ($err == 0 && $passwd1 !== $passwd2)      // check si les deux mdp sont ident
 
 if ($err == 0)                              // check si le login est pris ou pas.
 {
-  $requete_same_name = "SELECT COUNT(pseudo) as number FROM User WHERE pseudo = ?";
+  $requete_same_name = "SELECT COUNT(pseudo) AS number FROM User WHERE pseudo = ?";
   $query_name = $bdd->prepare($requete_same_name);
   $query_name->execute(array($pseudo));
   $count = $query_name->fetch();
@@ -25,7 +25,7 @@ if ($err == 0)                              // check si le login est pris ou pas
 
 if ($err == 0)                            // check si le mail n'est pas deja pris.
 {
-  $requete_same_mail = "SELECT COUNT(mail) as number FROM User WHERE mail = ?";
+  $requete_same_mail = "SELECT COUNT(mail) AS number FROM User WHERE mail = ?";
   $query_mail = $bdd->prepare($requete_same_mail);
   $query_mail->execute(array($mail));
   $nb_elem = $query_mail->fetch();

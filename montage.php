@@ -8,15 +8,70 @@ $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
 if (extract($_POST))
 {
+    // creation d'un repertoire au nom de l'utilisateur si il n'en a pas.
+    if (!is_dir("img/" . $_SESSION['user_name']))
+    {
+        mkdir("img/" . $_SESSION['user_name']);
+    }
+
+
+    // ON cree une path pour le fichier a enregistrer.
+    $location = "img/" . $_SESSION['user_name'] . "/photo" . date("YmdHis") . ".png";
+    // On trouve l'id de l'utilisateur.
+    $query_user_id = $bdd->prepare("SELECT id FROM user WHERE pseudo = ?");
+    $query_user_id->execute(array($_SESSION['user_name']));
+    $result_user_id = $query_user_id->fetch();
+    $id_user = $result_user_id['id'];
+
+    //on transfere les donnees recues du formulaire dans un fichier.
     $hidden = str_replace(' ', '+', $hidden);
     $file_content = base64_decode($hidden);
-    file_put_contents("img/test.png", $file_content);
-    $bdd->query("INSERT INTO image (location, owner, creation_time, name)
-                VALUES ('img/test.png', 2, 20000101000000, 'pablo')");
+    file_put_contents($location, $file_content);
+
+    // On check le nom de la photo.
+    if (empty($name))
+    {
+        $name = "photo de " . $_SESSION['user_name'];
+    }
+    if (empty($description)) //INSERTION dans la BDD sans description
+    {
+        $requete_insertion_image = "INSERT INTO image (location, owner, creation_time, name)
+                   VALUES (:location, :id_user, :creation_time, :name)";
+        //On insere la photo dans la BDD.
+        $query_add_photo = $bdd->prepare($requete_insertion_image);
+        $result_photo_upload = $query_add_photo->execute(array('location' => $location,
+                                                               'id_user' => $id_user,
+                                                               'creation_time' => date("YmdHis"),
+                                                               'name' => $name));
+    }
+    else  // INSERTION dans la BDD avec une description.
+    {
+        $requete_insertion_image = "INSERT INTO image (location, owner, creation_time, name, description)
+                   VALUES (:location, :id_user, :creation_time, :name, :description)";
+        //On insere la photo dans la BDD.
+        $query_add_photo = $bdd->prepare($requete_insertion_image);
+        $result_photo_upload = $query_add_photo->execute(array('location' => $location,
+                                                               'id_user' => $id_user,
+                                                               'creation_time' => date("YmdHis"),
+                                                               'name' => $name,
+                                                               'description' => $description));
+    }
+
+    $query_add_photo->closeCursor();
+
+    // Resultat de l'operation d'insertion.
+    if ($result_photo_upload)
+    {
+        echo "<h2>la photo a bien ete sauvee</h2>";
+    }
+    else {
+        echo "<h2>Une erreur est survenue, reesayez plus tard.</h2>";
+    }
 }
 else {
     echo "<h2>NONNONNNON</h2>";
 }
+
 
  ?>
 <!DOCTYPE html>
@@ -52,6 +107,8 @@ else {
 
                     	<button id="snap">Take Photo</button>
                         <form class="" action="#" method="post">
+                            <input type="text" name="name" id="name" placeholder="nom" class="hidden" required>
+                            <textarea name="description" id="description" rows="4" cols="40" class="hidden" placeholder="description"></textarea>
                             <input type="hidden" name="hidden" id="hidden" value="">
                             <button id="save_photo" class="hidden">save photo</button>
                         </form>
@@ -63,26 +120,20 @@ else {
                 <div class="pictures">
                     <h2>mes jolies photos</h2>
                     <?php
-/*
+
                         // script pour afficher les photos de l'utilisateur.
                         $requete_cherche_photos = "SELECT * from image WHERE owner = (SELECT id from user where pseudo = ?)";
                         $query_photos = $bdd->prepare($requete_cherche_photos);
                         $query_photos->execute(array($_SESSION['user_name']));
                         while ($row = $query_photos->fetch())
                         {
-                            echo '<img src="' . file_get_contents($row['location']) . '" alt="mes photos" class="mini_photos"/>';
+                            echo '<img src="' . $row['location'] . '" alt="' . $row['name'] . '" title="' . $row['description'] . '" class="mini_photos"/>';
                         }
                         $query_photos->closeCursor();
-                        */
+
                      ?>
 
                     <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-                    <img src="#" class="mini_photos" id="cam" />
 
                 </div>
                 <div class="test">

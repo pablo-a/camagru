@@ -27,7 +27,7 @@ if ($nb_var)
 	include_once('test_form.php');
 
 	// CONNECTION A LA BDD POUR AJOUTER L'UTILISATEUR SI PAS D'ERREUR.
-	if ($err == 0)
+	if ($err === 0)
 	{
 		$suscribe = $bdd->prepare('INSERT into user(pseudo, mail, password, creation_time, active, admin)
 								VALUES (:pseudo, :mail, :password, :creation_time, 0, 0)');

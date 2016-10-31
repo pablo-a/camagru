@@ -83,3 +83,16 @@ button:hover {
 	margin: 5%;
 	width: 38%;
 }
+
+#name {
+	margin: 10px 40%;
+	padding: 4px;
+	font-size: 1em;
+}
+
+textarea {
+	display: block;
+	margin: 10px 32%;
+	padding: 10px;
+	font-size: 1em;
+}

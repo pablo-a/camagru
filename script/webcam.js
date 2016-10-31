@@ -7,6 +7,8 @@ window.addEventListener("DOMContentLoaded", function() {
     var save_photo = document.getElementById('save_photo');
     var take_photo = document.getElementById('snap');
     var back_webcam = document.getElementById('back_webcam');
+    var name = document.getElementById('name');
+    var description = document.getElementById('description');
 
     var mediaConfig =  { video: true };
     var error_webcam = function(error) {
@@ -42,21 +44,27 @@ window.addEventListener("DOMContentLoaded", function() {
         save_photo.style.display = "block";
         back_webcam.style.display = "block";
         take_photo.style.display = "none";
+        // les champs de formulaires.
+        name.style.display = "block";
+        description.style.display = "block";
     });
 
     back_webcam.addEventListener('click', function() {
+        // on remet la webcam et on fait disparaitre le canvas.
         canvas.style.display = "none";
         video.style.display = "block";
+        // on affiche les bons boutons.
         save_photo.style.display = "none";
         back_webcam.style.display = "none";
         take_photo.style.display = "block";
+        //les champs de formulaire.
+        name.style.display = "none";
+        description.style.display = "none";
     });
 
     save_photo.addEventListener('click', function() {
         var img = canvas.toDataURL();
         var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
-        //var output = img.replace(/^data:image\/(png|jpg);base64,/, "");
         document.getElementById('hidden').value = output;
-        document.getElementById('cam').src = img;
     });
 }, false);
