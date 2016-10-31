@@ -42,7 +42,7 @@
 	overflow-x: auto;
 }
 
-#video, #canvas {
+#video, #canvas, #canvas_upload {
 	margin: 2% 25%;
 }
 
@@ -85,7 +85,7 @@ button:hover {
 }
 
 #name {
-	margin: 10px 40%;
+	margin: 10px 42%;
 	padding: 4px;
 	font-size: 1em;
 }

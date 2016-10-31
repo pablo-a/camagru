@@ -45,7 +45,6 @@ function user_exists($pseudo, $bdd)
 		<div class="body">
 			<?php include_once("include/signin.php"); //Formulaire de connexion ?>
 			<br />
-			<img src="upload/photo20161031111152" alt="test" />
 			<div class="footer">
 				<p>pabril copyright</p>
 			</div>

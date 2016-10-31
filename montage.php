@@ -27,7 +27,16 @@ include_once('webcam.php');
         <div class="body">
             <?php include_once("include/signin.php"); ?>
             <div class="montage">
-<?php if ($_SESSION['user_name'] !== "") { ?>
+<?php if ($_SESSION['user_name'] !== "") {
+
+    if (isset($_GET['err_upload']))
+    {
+        $err = array("erreur d'upload", "fichier trop gros", "mauvais type de fichier");
+        echo "<script>alert('Erreur : " . $err[$_GET['err_upload'] - 1] . "');</script>";
+        unlink("upload/image");
+    }
+
+    ?>
                 <div class="main">
                     <div class="filtres">
                         <p>
@@ -40,14 +49,14 @@ include_once('webcam.php');
                             <?php if (!$_FILES['upload']) { ?>
                             <video id="video" width="50%" height="40%" autoplay></video>
                             <canvas id="canvas" class="hidden" width="600%" height="450"></canvas>
-                            <form action="#" method="post" enctype="multipart/form-data">
+                            <form action="#" method="post" enctype="multipart/form-data" id="upload_form" class="hidden">
                                 <label for="upload">Image a uploader : </label>
                                 <input type="file" name="upload" id="upload" required>
                                 <input type="submit" name="submit" id="submit_upload" value="Envoyer">
                             </form>
                             <?php }
                             else { ?>
-                                <canvas id="canvas" width="600%" height="450" src="upload/photo20161031111152"></canvas>
+                                <canvas id="canvas_upload" width="600%" height="450"></canvas>
                             <?php } ?>
 
                         </div>
@@ -61,7 +70,9 @@ include_once('webcam.php');
                         </form>
 
                         <button id="back_webcam" class="hidden">back to webcam</button>
-
+                        <form  action="#" method="get">
+                            <button id="back_upload" class="hidden">back to upload</button>
+                        </form>
                     </div>
                 </div>
                 <div class="pictures">
@@ -81,7 +92,6 @@ include_once('webcam.php');
                      ?>
 
                     <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
-
                 </div>
 <?php }
 else { ?>

@@ -1,21 +1,26 @@
 window.addEventListener("DOMContentLoaded", function() {
 
     var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
     var video = document.getElementById('video');
     // Tout mes boutons.
     var save_photo = document.getElementById('save_photo');
     var take_photo = document.getElementById('snap');
     var back_webcam = document.getElementById('back_webcam');
+    var back_upload = document.getElementById('back_upload');
     var name = document.getElementById('name');
     var description = document.getElementById('description');
+    var canvas_upload = document.getElementById('canvas_upload');
 
-    var mediaConfig =  { video: true };
+    var mediaConfig = {video: true};
     var error_webcam = function(error) {
         console.log('Erreur afficher l\'upload', error);
-        //document.getElementById('upload').display = "block";
-        video.style.display = "none";
-        take_photo.style.display = "none";
+        if (!canvas_upload)// si on est pas sur la partie 2 de l'upload (save et back to webcam)
+        {
+            video.style.display = "none";
+            take_photo.style.display = "none";
+            document.getElementById('upload_form').style.display = "block";
+
+        }
     };
 
     if(navigator.getUserMedia)
@@ -37,9 +42,24 @@ window.addEventListener("DOMContentLoaded", function() {
         }, error_webcam);
     }
 
+    if (canvas_upload)// Dans le cas ou on fait de l'upload.
+    {
+        var context_canvas_upload = canvas_upload.getContext('2d');
+        var img_upload = new Image();
+        img_upload.src =  "upload/image";
+        context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
+
+        save_photo.style.display = "block";
+        back_upload.style.display = "block";
+        take_photo.style.display = "none";
+        name.style.display = "block";
+        description.style.display = "block";
+    }
+
         // Prendre la photo.
     take_photo.addEventListener('click', function() {
         // On remplace la webcam par le canvas avec la photo prise.
+        var context = canvas.getContext('2d');
         context.drawImage(video, 0, 0, 600, 450);
         canvas.style.display = "block";
         video.style.display = "none";
@@ -66,14 +86,19 @@ window.addEventListener("DOMContentLoaded", function() {
     });
 
     save_photo.addEventListener('click', function() {
-        var img = canvas.toDataURL();
-        var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
-        document.getElementById('hidden').value = output;
+        if (!canvas_upload)
+        {
+            var img = canvas.toDataURL();
+            var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
+            document.getElementById('hidden').value = output;
+        }
+        else {
+            var img = canvas_upload.toDataURL();
+            var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
+            document.getElementById('hidden').value = output;
+        }
     });
 
-    if(window.location.href.indexOf("upload") > -1) {
-       alert("your url contains the name franky");
-    }
 /*
     document.getElementById('submit_upload').addEventListener('click', function() {
         var image_uploaded = NewImage();

@@ -1,35 +1,40 @@
 <?php
-
+include_once("redirect.php");
 function upload($index, $maxsize, $extensions, $destination)
 {
    //Test1: fichier correctement uploadé
-     if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return FALSE;
+     if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return 1;
    //Test2: taille limite
-     if ($_FILES[$index]['size'] > $maxsize) return FALSE;
+     if ($_FILES[$index]['size'] > $maxsize) return 2;
    //Test3: extension
      $ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
-     if (!in_array($ext,$extensions)) return FALSE;
+     if (!in_array($ext,$extensions)) return 3;
    //Déplacement
     move_uploaded_file($_FILES[$index]['tmp_name'],$destination);
-   return TRUE;
+   return 0;
 
 }
 
-if (isset($_FILES) && $_FILES['upload'])
+if (isset($_FILES) && $_FILES['upload']) // Dans le cas d'une photo par upload.
 {
     $array_extensions = array('jpg', 'jpeg', 'png');
-    $destination = "upload/photo" . date("YmdHis") . substr(strrchr($_FILES[$index]['name'],'.'),1);
-    if (upload("upload", 1048576, $array_extensions, $destination))
+    //$destination = "upload/photo" . date("YmdHis") . substr(strrchr($_FILES[$index]['name'],'.'),1);
+    $destination = "upload/image";
+    $ret_upload = upload("upload", 1048576, $array_extensions, $destination);
+    if ($ret_upload === 0)
     {
          echo "<script>alert('upload ok');</script>";
     }
     else {
-        echo "<script>alert('upload erreur');</script>";
+        redirect("montage.php?err_upload=" . $ret_upload);
     }
 }
 
-if (extract($_POST) && $hidden)
+if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
 {
+
+    unlink("upload/image");
+
     // creation d'un repertoire au nom de l'utilisateur si il n'en a pas.
     if (!is_dir("img/" . $_SESSION['user_name']))
     {
