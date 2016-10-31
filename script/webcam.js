@@ -13,6 +13,9 @@ window.addEventListener("DOMContentLoaded", function() {
     var mediaConfig =  { video: true };
     var error_webcam = function(error) {
         console.log('Erreur afficher l\'upload', error);
+        //document.getElementById('upload').display = "block";
+        video.style.display = "none";
+        take_photo.style.display = "none";
     };
 
     if(navigator.getUserMedia)
@@ -67,4 +70,17 @@ window.addEventListener("DOMContentLoaded", function() {
         var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
         document.getElementById('hidden').value = output;
     });
+
+    if(window.location.href.indexOf("upload") > -1) {
+       alert("your url contains the name franky");
+    }
+/*
+    document.getElementById('submit_upload').addEventListener('click', function() {
+        var image_uploaded = NewImage();
+        image_uploaded.src = 'upload/photo20161031111152';
+        context.drawImage(image_uploaded, 0, 0, 600, 450);
+        canvas.style.display = "block";
+        video.style.display = "none";
+    });
+*/
 }, false);

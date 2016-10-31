@@ -6,7 +6,36 @@ include_once('connect_bdd.php');
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
-if (extract($_POST))
+
+function upload($index, $maxsize, $extensions, $destination)
+{
+   //Test1: fichier correctement uploadé
+     if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return FALSE;
+   //Test2: taille limite
+     if ($_FILES[$index]['size'] > $maxsize) return FALSE;
+   //Test3: extension
+     $ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
+     if (!in_array($ext,$extensions)) return FALSE;
+   //Déplacement
+    move_uploaded_file($_FILES[$index]['tmp_name'],$destination);
+   return TRUE;
+
+}
+
+if (isset($_FILES))
+{
+    $array_extensions = array('jpg', 'jpeg', 'png');
+    $destination = "upload/photo" . date("YmdHis") . substr(strrchr($_FILES[$index]['name'],'.'),1);
+    if (upload("upload", 1048576000000, $array_extensions, $destination))
+    {
+         echo "<script>alert('upload ok');</script>";
+    }
+    else {
+        echo "<script>alert('erreur');</script>";
+    }
+}
+
+if (extract($_POST) && $hidden)
 {
     // creation d'un repertoire au nom de l'utilisateur si il n'en a pas.
     if (!is_dir("img/" . $_SESSION['user_name']))
@@ -28,48 +57,38 @@ if (extract($_POST))
     $file_content = base64_decode($hidden);
     file_put_contents($location, $file_content);
 
-    // On check le nom de la photo.
+    // On check le nom et la description de la photo.
     if (empty($name))
     {
         $name = "photo de " . $_SESSION['user_name'];
     }
-    if (empty($description)) //INSERTION dans la BDD sans description
+    if (empty($description))
     {
-        $requete_insertion_image = "INSERT INTO image (location, owner, creation_time, name)
-                   VALUES (:location, :id_user, :creation_time, :name)";
-        //On insere la photo dans la BDD.
-        $query_add_photo = $bdd->prepare($requete_insertion_image);
-        $result_photo_upload = $query_add_photo->execute(array('location' => $location,
-                                                               'id_user' => $id_user,
-                                                               'creation_time' => date("YmdHis"),
-                                                               'name' => $name));
+        $description = "photo de " . $_SESSION['user_name'];
     }
-    else  // INSERTION dans la BDD avec une description.
-    {
-        $requete_insertion_image = "INSERT INTO image (location, owner, creation_time, name, description)
-                   VALUES (:location, :id_user, :creation_time, :name, :description)";
-        //On insere la photo dans la BDD.
-        $query_add_photo = $bdd->prepare($requete_insertion_image);
-        $result_photo_upload = $query_add_photo->execute(array('location' => $location,
-                                                               'id_user' => $id_user,
-                                                               'creation_time' => date("YmdHis"),
-                                                               'name' => $name,
-                                                               'description' => $description));
-    }
+
+    //On insere la photo dans la BDD.
+    $requete_insertion_image = "INSERT INTO image (location, owner, creation_time, name, description)
+               VALUES (:location, :id_user, :creation_time, :name, :description)";
+
+    $query_add_photo = $bdd->prepare($requete_insertion_image);
+    $result_photo_upload = $query_add_photo->execute(array('location' => $location,
+                                                           'id_user' => $id_user,
+                                                           'creation_time' => date("YmdHis"),
+                                                           'name' => $name,
+                                                           'description' => $description));
+
 
     $query_add_photo->closeCursor();
 
     // Resultat de l'operation d'insertion.
     if ($result_photo_upload)
     {
-        echo "<h2>la photo a bien ete sauvee</h2>";
+        echo "<script> alert('la photo a bien ete sauvee.');</script>";
     }
     else {
-        echo "<h2>Une erreur est survenue, reesayez plus tard.</h2>";
+        echo  "<script> alert('Une erreur est survenue, reesayez plus tard.');</script>";
     }
-}
-else {
-    echo "<h2>NONNONNNON</h2>";
 }
 
 
@@ -92,6 +111,7 @@ else {
         <div class="body">
             <?php include_once("include/signin.php"); ?>
             <div class="montage">
+<?php if ($_SESSION['user_name'] !== "") { ?>
                 <div class="main">
                     <div class="filtres">
                         <p>
@@ -103,6 +123,11 @@ else {
                         <div class="webcam center">
                             <video id="video" width="50%" height="40%" autoplay></video>
                             <canvas id="canvas" class="hidden" width="600%" height="450"></canvas>
+                            <form action="#" method="post" enctype="multipart/form-data">
+                                <label for="upload">Image a uploader : </label>
+                                <input type="file" name="upload" id="upload" required>
+                                <input type="submit" name="submit" id="submit_upload" value="Envoyer">
+                            </form>
                         </div>
 
                     	<button id="snap">Take Photo</button>
@@ -136,9 +161,10 @@ else {
                     <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
 
                 </div>
-                <div class="test">
-                    <h2>okok</h2>
-                </div>
+<?php }
+else { ?>
+            <h2>vous devez etre connect&eacute pour acceder a la partie montage.</h2>
+<?php  } ?>
             </div>
         </div>
 

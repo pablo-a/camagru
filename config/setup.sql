@@ -58,4 +58,4 @@ INSERT INTO User (pseudo, password, mail, creation_time, active, admin)
 	VALUES ('pablo', 'pablo', 'pablo@abril.fr', 20160927111111, 1, 1);
 
 INSERT INTO image (location, owner, creation_time, name)
-	VALUES ('../orange.jpg', 2, 20160909000000, 'orange');
+	VALUES ('../orange.jpg', 1, 20160909000000, 'orange');

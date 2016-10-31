@@ -44,7 +44,7 @@
     					display_deconnected();
     					$_SESSION['user_name'] = $_POST['pseudo'];
                         unset($_POST);
-    					echo "<h2>Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !";
+    					echo "<h2>Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !</h2>";
     				}
     				else {
     					echo "<h2>Votre compte n'est pas actif</h2>";
