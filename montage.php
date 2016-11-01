@@ -39,9 +39,18 @@ include_once('webcam.php');
     ?>
                 <div class="main">
                     <div class="filtres">
-                        <p>
-                            filtres.
-                        </p>
+                        <img src="chapeau.png" alt="chapeau" class="filtre" id="imagechapeau"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
                     </div>
                     <div class="montage">
 

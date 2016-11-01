@@ -39,7 +39,7 @@
 	background-color: red;
 	border-radius: 10px;
 	box-shadow: 0 0 2em red;
-	overflow-x: auto;
+	overflow-y: auto;
 }
 
 #video, #canvas, #canvas_upload {
@@ -95,4 +95,10 @@ textarea {
 	margin: 10px 42%;
 	padding: 10px;
 	font-size: 1em;
+}
+
+.filtre {
+	width: 13%;
+	height: auto;
+	margin: 12px;
 }
