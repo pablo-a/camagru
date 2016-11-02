@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
     var mediaConfig = {video: true};
     var error_webcam = function(error) {
-        console.log('Erreur afficher l\'upload', error);
+        console.log('Webcam non disponible, afficher l\'upload', error);
         if (!canvas_upload)// si on est pas sur la partie 2 de l'upload (save et back to webcam)
         {
             video.style.display = "none";
@@ -42,25 +42,34 @@ window.addEventListener("DOMContentLoaded", function() {
         }, error_webcam);
     }
 
-    if (canvas_upload)// Dans le cas ou on fait de l'upload.
-    {
-        var context_canvas_upload = canvas_upload.getContext('2d');
-        var img_upload = new Image();
-        img_upload.src =  "upload/image";
-        context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
 
+    if (canvas_upload)// Dans le cas ou l'upload a ete fait.
+    {
         save_photo.style.display = "block";
         back_upload.style.display = "block";
         take_photo.style.display = "none";
         name.style.display = "block";
         description.style.display = "block";
+
+        var context_canvas_upload = canvas_upload.getContext('2d');
+        var img_upload = new Image();
+        img_upload.src =  "upload/image";
+        img_upload.onload = function() {
+            context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
+        }
     }
+
 
         // Prendre la photo.
     take_photo.addEventListener('click', function() {
         // On remplace la webcam par le canvas avec la photo prise.
         var context = canvas.getContext('2d');
+
+        var filtre = new Image();
+        filtre.src = "hatvert.png";
+
         context.drawImage(video, 0, 0, 600, 450);
+        filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
         canvas.style.display = "block";
         video.style.display = "none";
         //On affiche les boutons correspondant.

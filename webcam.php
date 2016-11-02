@@ -20,6 +20,7 @@ if (isset($_FILES) && $_FILES['upload']) // Dans le cas d'une photo par upload.
     $array_extensions = array('jpg', 'jpeg', 'png');
     //$destination = "upload/photo" . date("YmdHis") . substr(strrchr($_FILES[$index]['name'],'.'),1);
     $destination = "upload/image";
+    // on enregistre le retour de notre fonction d'upload pour savoir si erreur ou pas.
     $ret_upload = upload("upload", 1048576, $array_extensions, $destination);
     if ($ret_upload === 0)
     {
@@ -32,8 +33,6 @@ if (isset($_FILES) && $_FILES['upload']) // Dans le cas d'une photo par upload.
 
 if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
 {
-
-    unlink("upload/image");
 
     // creation d'un repertoire au nom de l'utilisateur si il n'en a pas.
     if (!is_dir("img/" . $_SESSION['user_name']))
@@ -70,7 +69,7 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
                VALUES (:location, :id_user, :creation_time, :name, :description)";
 
     $query_add_photo = $bdd->prepare($requete_insertion_image);
-    $result_photo_upload = $query_add_photo->execute(array('location' => $location,
+    $result_add_photo = $query_add_photo->execute(array('location' => $location,
                                                            'id_user' => $id_user,
                                                            'creation_time' => date("YmdHis"),
                                                            'name' => $name,
@@ -80,13 +79,15 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
     $query_add_photo->closeCursor();
 
     // Resultat de l'operation d'insertion.
-    if ($result_photo_upload)
+    if ($result_add_photo)
     {
         echo "<script> alert('la photo a bien ete sauvee.');</script>";
     }
     else {
         echo  "<script> alert('Une erreur est survenue, reesayez plus tard.');</script>";
     }
+    unlink("upload/image");
+
 }
 
 

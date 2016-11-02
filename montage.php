@@ -28,12 +28,13 @@ include_once('webcam.php');
             <?php include_once("include/signin.php"); ?>
             <div class="montage">
 <?php if ($_SESSION['user_name'] !== "") {
+    // SI l'utilisateur est connecte on affiche la partie de montage.
 
+    // Dans le cas ou on arrive sur une erreur d'upload.
     if (isset($_GET['err_upload']))
     {
         $err = array("erreur d'upload", "fichier trop gros", "mauvais type de fichier");
         echo "<script>alert('Erreur : " . $err[$_GET['err_upload'] - 1] . "');</script>";
-        unlink("upload/image");
     }
 
     ?>
@@ -55,17 +56,19 @@ include_once('webcam.php');
                     <div class="montage">
 
                         <div class="webcam center">
-                            <?php if (!$_FILES['upload']) { ?>
+                            <?php if (!$_FILES['upload']) { //page normale.?>
                             <video id="video" width="50%" height="40%" autoplay></video>
+                            <!-- canvas hidden tant que la photo a pas ete prise. -->
                             <canvas id="canvas" class="hidden" width="600%" height="450"></canvas>
+                            <!--  formulaire cache pour les upload. -->
                             <form action="#" method="post" enctype="multipart/form-data" id="upload_form" class="hidden">
                                 <label for="upload">Image a uploader : </label>
                                 <input type="file" name="upload" id="upload" required>
                                 <input type="submit" name="submit" id="submit_upload" value="Envoyer">
                             </form>
                             <?php }
-                            else { ?>
-                                <canvas id="canvas_upload" width="600%" height="450"></canvas>
+                            else { //Si l'upload a ete fait ?>
+                                <canvas id="canvas_upload" width="600" height="450"></canvas>
                             <?php } ?>
 
                         </div>
@@ -78,7 +81,7 @@ include_once('webcam.php');
                             <button id="save_photo" class="hidden">save photo</button>
                         </form>
 
-                        <button id="back_webcam" class="hidden">back to webcam</button>
+                        <a href="montage.php"><button id="back_webcam" class="hidden">back to webcam</button></a>
                         <form  action="#" method="get">
                             <button id="back_upload" class="hidden">back to upload</button>
                         </form>
@@ -94,7 +97,7 @@ include_once('webcam.php');
                         $query_photos->execute(array($_SESSION['user_name']));
                         while ($row = $query_photos->fetch())
                         {
-                            echo '<img src="' . $row['location'] . '" alt="' . $row['name'] . '" title="' . $row['description'] . '" class="mini_photos"/>';
+                            echo '<a href="gallerie.php?id=' . $row['id'] . '"><img src="' . $row['location'] . '" alt="' . $row['name'] . '" title="' . $row['description'] . '" class="mini_photos"/></a>';
                         }
                         $query_photos->closeCursor();
 
