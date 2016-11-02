@@ -92,6 +92,7 @@ button:hover {
 	margin: 10px 42%;
 	padding: 4px;
 	font-size: 1em;
+	width: 30%;
 }
 
 textarea {
@@ -99,6 +100,7 @@ textarea {
 	margin: 10px 42%;
 	padding: 10px;
 	font-size: 1em;
+	width: 30%;
 }
 
 .filtre {

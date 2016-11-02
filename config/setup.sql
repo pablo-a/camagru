@@ -70,4 +70,8 @@ INSERT INTO image (location, owner, creation_time, name)
 INSERT INTO filtre (location, description)
 	VALUES  ("filtre/hatvert.png", "joli chapeau vert"),
 			("filtre/clementine.png", "petite clementine"),
-			("filtre/banana.png", "une sacre banane");
+			("filtre/banana.png", "une sacre banane"),
+			("filtre/icecream.png", "une bonne glace ca fait du bien"),
+			("filtre/cat.png", "un joli chat"),
+			("filtre/tulipe.png", "des fleurs a offrir"),
+			("filtre/pipe.png", "hmmmm du bon tabac");
