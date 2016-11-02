@@ -54,8 +54,20 @@ CREATE TABLE IF NOT EXISTS reset (
 	FOREIGN KEY (id_user) REFERENCES user (id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS filtre (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	location VARCHAR(100) NOT NULL,
+	description TEXT,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
 INSERT INTO User (pseudo, password, mail, creation_time, active, admin)
 	VALUES ('pablo', 'pablo', 'pablo@abril.fr', 20160927111111, 1, 1);
 
 INSERT INTO image (location, owner, creation_time, name)
 	VALUES ('../orange.jpg', 1, 20160909000000, 'orange');
+
+INSERT INTO filtre (location, description)
+	VALUES  ("filtre/hatvert.png", "joli chapeau vert"),
+			("filtre/clementine.png", "petite clementine"),
+			("filtre/banana.png", "une sacre banane");

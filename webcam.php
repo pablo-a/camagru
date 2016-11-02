@@ -66,7 +66,7 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
     }
     if (empty($description))
     {
-        $description = "photo de " . $_SESSION['user_name'] . "avec le filtre " . $_POST['filtre'];
+        $description = "photo de " . $_SESSION['user_name'] . " avec le filtre " . $_POST['filtre'];
     }
 
     //On insere la photo dans la BDD.

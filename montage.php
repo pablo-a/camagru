@@ -41,6 +41,21 @@ include_once('webcam.php');
                 <div class="main">
                     <div class="filtres hidden" id="filtre">
                         <form class="form_filtre" action="#" method="post" id="form_save_photo">
+                            <?php
+
+                            $requete_cherche_filtre = "SELECT * from filtre";
+                            $query_filtre = $bdd->query($requete_cherche_filtre);
+                            while ($row = $query_filtre->fetch())
+                            {
+                                echo '<input type="radio" name="filtre" class="radio" value="f' .
+                                $row['id'] . '" id="f' . $row['id'] . '"><label for="f' . $row['id'] . '"><img src="' . $row['location']
+                                . '" alt="' . $row['description'] . '" class="filtre"/></label>';
+                            }
+                            $query_filtre->closeCursor();
+
+
+                             ?>
+                             <!--
                             <input type="radio" name="filtre" id="f1" class="radio" value="f1">
                             <label for="f1"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
                             <input type="radio" name="filtre" id="f2" class="radio" value="f2">
@@ -57,6 +72,7 @@ include_once('webcam.php');
                             <label for="f7"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
                             <input type="radio" name="filtre" id="f8" class="radio" value="f8">
                             <label for="f8"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                        -->
                         </form>
                     </div>
                     <div class="montage">

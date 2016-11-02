@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
     var canvas = document.getElementById('canvas');
     var video = document.getElementById('video');
+
     // Tout mes boutons.
     var save_photo = document.getElementById('save_photo');
     var take_photo = document.getElementById('snap');
@@ -12,6 +13,15 @@ window.addEventListener("DOMContentLoaded", function() {
     var canvas_upload = document.getElementById('canvas_upload');
     var filtres = document.getElementById('filtre');
     var f1 = document.getElementById('f1');
+
+    if (canvas)
+    {
+        var context = canvas.getContext('2d');
+    }
+
+    else if (canvas_upload) {
+        var context_canvas_upload = canvas_upload.getContext('2d');
+    }
 
     var mediaConfig = {video: true};
     var error_webcam = function(error) {
@@ -46,14 +56,38 @@ window.addEventListener("DOMContentLoaded", function() {
 
     if (f1.style.display != "none")
     {
-        var context = canvas.getContext('2d');
         f1.addEventListener('click', function() {
             var filtre = new Image();
             filtre.src = "hatvert.png";
 
-            filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
+            if (canvas)
+            {
+                filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
+            }
+            else if (canvas_upload)
+            {
+                filtre.onload = function () {context_canvas_upload.drawImage(filtre, 280, 0, 150, 150);}
+            }
         });
     }
+
+    if (f2.style.display != "none")
+    {
+        f2.addEventListener('click', function() {
+            var filtre = new Image();
+            filtre.src = "filtre/clementine.png";
+
+            if (canvas)
+            {
+                filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
+            }
+            else if (canvas_upload)
+            {
+                filtre.onload = function () {context_canvas_upload.drawImage(filtre, 280, 0, 150, 150);}
+            }
+        });
+    }
+
 
     if (canvas_upload)// Dans le cas ou l'upload a ete fait.
     {

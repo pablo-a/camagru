@@ -106,3 +106,8 @@ textarea {
 	height: auto;
 	margin: 12px;
 }
+
+.filtre:hover {
+	opacity: 0.7;
+	cursor: pointer;
+}
