@@ -10,6 +10,8 @@ window.addEventListener("DOMContentLoaded", function() {
     var name = document.getElementById('name');
     var description = document.getElementById('description');
     var canvas_upload = document.getElementById('canvas_upload');
+    var filtres = document.getElementById('filtre');
+    var f1 = document.getElementById('f1');
 
     var mediaConfig = {video: true};
     var error_webcam = function(error) {
@@ -42,12 +44,22 @@ window.addEventListener("DOMContentLoaded", function() {
         }, error_webcam);
     }
 
+    if (f1.style.display != "none")
+    {
+        var context = canvas.getContext('2d');
+        f1.addEventListener('click', function() {
+            var filtre = new Image();
+            filtre.src = "hatvert.png";
+
+            filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
+        });
+    }
 
     if (canvas_upload)// Dans le cas ou l'upload a ete fait.
     {
+        filtres.style.display = "block";
         save_photo.style.display = "block";
         back_upload.style.display = "block";
-        take_photo.style.display = "none";
         name.style.display = "block";
         description.style.display = "block";
 
@@ -55,32 +67,40 @@ window.addEventListener("DOMContentLoaded", function() {
         var img_upload = new Image();
         img_upload.src =  "upload/image";
         img_upload.onload = function() {
-            context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
+        context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
         }
     }
 
 
-        // Prendre la photo.
-    take_photo.addEventListener('click', function() {
-        // On remplace la webcam par le canvas avec la photo prise.
-        var context = canvas.getContext('2d');
+    // Prendre la photo.
+    if (take_photo)
+    {
+        take_photo.addEventListener('click', function() {
+            // On remplace la webcam par le canvas avec la photo prise.
+            var context = canvas.getContext('2d');
 
-        var filtre = new Image();
-        filtre.src = "hatvert.png";
+    /*
+            var filtre = new Image();
+            filtre.src = "hatvert.png";
 
-        context.drawImage(video, 0, 0, 600, 450);
-        filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
-        canvas.style.display = "block";
-        video.style.display = "none";
-        //On affiche les boutons correspondant.
-        save_photo.style.display = "block";
-        back_webcam.style.display = "block";
-        take_photo.style.display = "none";
-        // les champs de formulaires.
-        name.style.display = "block";
-        description.style.display = "block";
-    });
+            filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
+    */
 
+            context.drawImage(video, 0, 0, 600, 450);
+            filtres.style.display = "block";
+            canvas.style.display = "block";
+            video.style.display = "none";
+            //On affiche les boutons correspondant.
+            save_photo.style.display = "block";
+            back_webcam.style.display = "block";
+            take_photo.style.display = "none";
+            // les champs de formulaires.
+            name.style.display = "block";
+            description.style.display = "block";
+        });
+    }
+
+/*
     back_webcam.addEventListener('click', function() {
         // on remet la webcam et on fait disparaitre le canvas.
         canvas.style.display = "none";
@@ -93,7 +113,7 @@ window.addEventListener("DOMContentLoaded", function() {
         name.style.display = "none";
         description.style.display = "none";
     });
-
+*/
     save_photo.addEventListener('click', function() {
         if (!canvas_upload)
         {

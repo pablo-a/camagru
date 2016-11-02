@@ -40,7 +40,6 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
         mkdir("img/" . $_SESSION['user_name']);
     }
 
-
     // ON cree une path pour le fichier a enregistrer.
     $location = "img/" . $_SESSION['user_name'] . "/photo" . date("YmdHis") . ".png";
     // On trouve l'id de l'utilisateur.
@@ -54,6 +53,12 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
     $file_content = base64_decode($hidden);
     file_put_contents($location, $file_content);
 
+    // Etape ou on ajoute le filtre si il y en a un.
+    if ($_POST['filtre'])
+    {
+        echo "ajouter mon petit filtre avec GD.";
+    }
+
     // On check le nom et la description de la photo.
     if (empty($name))
     {
@@ -61,7 +66,7 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
     }
     if (empty($description))
     {
-        $description = "photo de " . $_SESSION['user_name'];
+        $description = "photo de " . $_SESSION['user_name'] . "avec le filtre " . $_POST['filtre'];
     }
 
     //On insere la photo dans la BDD.
@@ -86,7 +91,10 @@ if (extract($_POST) && $hidden) // Dans le cas d'une photo par webcam.
     else {
         echo  "<script> alert('Une erreur est survenue, reesayez plus tard.');</script>";
     }
-    unlink("upload/image");
+    if (is_file("upload/image"))
+    {
+        unlink("upload/image");
+    }
 
 }
 

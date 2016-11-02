@@ -60,6 +60,10 @@ button {
     cursor: pointer;
 }
 
+.radio {
+	display: none;
+}
+
 button:hover {
     background-color: #f44336;
     color: white;

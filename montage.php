@@ -39,25 +39,32 @@ include_once('webcam.php');
 
     ?>
                 <div class="main">
-                    <div class="filtres">
-                        <img src="chapeau.png" alt="chapeau" class="filtre" id="imagechapeau"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
-                        <img src="chapeau.png" alt="chapeau" class="filtre"/>
+                    <div class="filtres hidden" id="filtre">
+                        <form class="form_filtre" action="#" method="post" id="form_save_photo">
+                            <input type="radio" name="filtre" id="f1" class="radio" value="f1">
+                            <label for="f1"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f2" class="radio" value="f2">
+                            <label for="f2"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f3" class="radio" value="f3">
+                            <label for="f3"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f4" class="radio" value="f4">
+                            <label for="f4"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f5" class="radio" value="f5">
+                            <label for="f5"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f6" class="radio" value="f6">
+                            <label for="f6"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f7" class="radio" value="f7">
+                            <label for="f7"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                            <input type="radio" name="filtre" id="f8" class="radio" value="f8">
+                            <label for="f8"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
+                        </form>
                     </div>
                     <div class="montage">
 
                         <div class="webcam center">
                             <?php if (!$_FILES['upload']) { //page normale.?>
                             <video id="video" width="50%" height="40%" autoplay></video>
+                            <button id="snap">Take Photo</button>
                             <!-- canvas hidden tant que la photo a pas ete prise. -->
                             <canvas id="canvas" class="hidden" width="600%" height="450"></canvas>
                             <!--  formulaire cache pour les upload. -->
@@ -72,14 +79,10 @@ include_once('webcam.php');
                             <?php } ?>
 
                         </div>
-
-                    	<button id="snap">Take Photo</button>
-                        <form class="" action="#" method="post">
-                            <input type="text" name="name" id="name" placeholder="nom" class="hidden" required>
-                            <textarea name="description" id="description" rows="4" cols="40" class="hidden" placeholder="description"></textarea>
-                            <input type="hidden" name="hidden" id="hidden" value="">
-                            <button id="save_photo" class="hidden">save photo</button>
-                        </form>
+                            <input type="text" name="name" id="name" placeholder="nom" class="hidden" required form="form_save_photo">
+                            <textarea name="description" id="description" rows="4" cols="40" class="hidden" placeholder="description" form="form_save_photo"></textarea>
+                            <input type="hidden" name="hidden" id="hidden" value="" form="form_save_photo">
+                            <button id="save_photo" class="hidden" form="form_save_photo">save photo</button>
 
                         <a href="montage.php"><button id="back_webcam" class="hidden">back to webcam</button></a>
                         <form  action="#" method="get">
@@ -97,7 +100,9 @@ include_once('webcam.php');
                         $query_photos->execute(array($_SESSION['user_name']));
                         while ($row = $query_photos->fetch())
                         {
-                            echo '<a href="gallerie.php?id=' . $row['id'] . '"><img src="' . $row['location'] . '" alt="' . $row['name'] . '" title="' . $row['description'] . '" class="mini_photos"/></a>';
+                            echo '<a href="gallerie.php?id_photo=' . $row['id'] . '"><img src="' .
+                            $row['location'] . '" alt="' . $row['name'] . '" title="' .
+                            $row['description'] . '" class="mini_photos"/></a>';
                         }
                         $query_photos->closeCursor();
 
