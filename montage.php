@@ -57,24 +57,7 @@ include_once('webcam.php');
 
 
                              ?>
-                             <!--
-                            <input type="radio" name="filtre" id="f1" class="radio" value="f1">
-                            <label for="f1"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f2" class="radio" value="f2">
-                            <label for="f2"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f3" class="radio" value="f3">
-                            <label for="f3"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f4" class="radio" value="f4">
-                            <label for="f4"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f5" class="radio" value="f5">
-                            <label for="f5"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f6" class="radio" value="f6">
-                            <label for="f6"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f7" class="radio" value="f7">
-                            <label for="f7"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                            <input type="radio" name="filtre" id="f8" class="radio" value="f8">
-                            <label for="f8"><img src="hatvert.png" alt="chapeau" class="filtre"/></label>
-                        -->
+
                         </form>
                     </div>
                     <div class="montage">
@@ -125,8 +108,6 @@ include_once('webcam.php');
                         $query_photos->closeCursor();
 
                      ?>
-
-                    <img src="../orange.jpg" alt="ma photo d'orange" class="mini_photos"/>
                 </div>
 <?php }
 else { ?>

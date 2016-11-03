@@ -25,11 +25,6 @@ if (extract($_POST) && $hidden) // Photo recue du formulaire (upload ou webcam)
     $file_content = base64_decode($hidden);
     file_put_contents($location, $file_content);
 
-    // Etape ou on ajoute le filtre si il y en a un.
-    if ($_POST['filtre'])
-    {
-        echo "ajouter mon petit filtre avec GD.";
-    }
 
     // On check le nom et la description de la photo.
     if (empty($name))

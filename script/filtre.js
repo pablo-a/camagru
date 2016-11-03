@@ -13,27 +13,6 @@ window.addEventListener("DOMContentLoaded", function() {
         var context_canvas_upload = canvas_upload.getContext('2d');
     }
 
-    // creation canvas de backup (photo de base.)
-    /*
-    var image_backup = new Image();
-    if (canvas) {
-        image_backup.src = canvas.toDataURL("image/png");
-    }
-    else if (canvas_upload) {
-        image_backup.src = canvas_upload.toDataURL("image/png");
-    }
-
-
-    function restore_image(ctx) {
-        //restore the original image
-        ctx.drawImage(image_backup, 0, 0);
-    }
-*/
-    //recuperation des filtres.
-    //var f1 = document.getElementById('f1');
-    //var f2 = document.getElementById('f2');
-    //var f3 = document.getElementById('f3');
-
 
     function change_filtre(filtre) {
         if (canvas) {
@@ -58,47 +37,6 @@ window.addEventListener("DOMContentLoaded", function() {
                 filtre.onload = change_filtre(filtre);
             };
             })(i));
-            //var selector_img = 'img[alt=f' + radios[i].id + ']';
-            //console.log('img[alt=f' + radios[i].id + ']');
-            //var image_filtre = document.querySelector(selector_img);
-            /*
-            for (var i = 0; i < image.length; i++) {
-                console.log(image[i].alt);
-            }
-
-            var filtre = new Image();
-            filtre.src = image[1].src;
-            filtre.onload = change_filtre(filtre);
-            */
-
     }
 
-
-/*
-    if (f1.style.display != "none")
-        f1.addEventListener('click', function() {
-            var filtre = new Image();
-            filtre.src = "hatvert.png";
-            filtre.onload = change_filtre(filtre);
-        });
-    }
-
-    if (f2.style.display != "none")
-    {
-        f2.addEventListener('click', function() {
-            var filtre = new Image();
-            filtre.src = "hatvert.png";
-            filtre.onload = change_filtre(filtre);
-        });
-    }
-
-    if (f3.style.display != "none")
-    {
-        f3.addEventListener('click', function() {
-            var filtre = new Image();
-            filtre.src = "hatvert.png";
-            filtre.onload = change_filtre(filtre);
-        });
-    }
-*/
 }, false);
