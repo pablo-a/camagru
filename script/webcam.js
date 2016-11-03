@@ -2,6 +2,8 @@ window.addEventListener("DOMContentLoaded", function() {
 
     var canvas = document.getElementById('canvas');
     var canvas_upload = document.getElementById('canvas_upload');
+    var canvas_backup = document.getElementById('canvas_backup');
+    var context_backup = canvas_backup.getContext('2d');
     var video = document.getElementById('video');
 
     // Tout mes boutons.
@@ -20,10 +22,14 @@ window.addEventListener("DOMContentLoaded", function() {
     if (canvas)
     {
         var context = canvas.getContext('2d');
+        canvas_backup.width = canvas.width;
+        canvas_backup.height = canvas.height;
     }
 
     else if (canvas_upload) {
         var context_canvas_upload = canvas_upload.getContext('2d');
+        canvas_backup.width = canvas_upload.width;
+        canvas_backup.height = canvas_upload.height;
     }
 
 
@@ -74,7 +80,11 @@ window.addEventListener("DOMContentLoaded", function() {
         var context_canvas_upload = canvas_upload.getContext('2d');
         var img_upload = new Image();
         img_upload.src =  "upload/image";
-        img_upload.onload = function(){context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);}
+        img_upload.onload = function(){
+            context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
+            context_backup.drawImage(img_upload, 0, 0, 600, 450);
+        }
+
     }
 
 
@@ -84,6 +94,7 @@ window.addEventListener("DOMContentLoaded", function() {
         take_photo.addEventListener('click', function() {
             // On remplace la webcam par le canvas avec la photo prise.
             var context = canvas.getContext('2d');
+            var context_backup = canvas_backup.getContext('2d');
 
     /*
             var filtre = new Image();
@@ -92,6 +103,7 @@ window.addEventListener("DOMContentLoaded", function() {
             filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
     */
             context.drawImage(video, 0, 0, 600, 450);
+            context_backup.drawImage(video, 0, 0, 600, 450);
             filtres.style.display = "block";
             canvas.style.display = "block";
             video.style.display = "none";

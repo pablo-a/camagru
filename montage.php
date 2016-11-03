@@ -51,7 +51,7 @@ include_once('webcam.php');
                             {
                                 echo '<input type="radio" name="filtre" class="radio" value="f' .
                                 $row['id'] . '" id="f' . $row['id'] . '"><label for="f' . $row['id'] . '"><img src="' . $row['location']
-                                . '" alt="' . $row['description'] . '" class="filtre"/></label>';
+                                . '" alt="' . $row['description'] . '" name="image_filtre" class="filtre"/></label>';
                             }
                             $query_filtre->closeCursor();
 
@@ -101,6 +101,7 @@ include_once('webcam.php');
                             <input type="hidden" name="hidden" id="hidden" value="" form="form_save_photo">
                             <button id="save_photo" class="hidden" form="form_save_photo">save photo</button>
 
+                        <canvas id="canvas_backup" width="600" height="450" class="hidden"></canvas>
                         <a href="montage.php"><button id="back_webcam" class="hidden">back to webcam</button></a>
                         <form  action="#" method="get">
                             <button id="back_upload" class="hidden">back to upload</button>
