@@ -1,6 +1,7 @@
 window.addEventListener("DOMContentLoaded", function() {
 
     var canvas = document.getElementById('canvas');
+    var canvas_upload = document.getElementById('canvas_upload');
     var video = document.getElementById('video');
 
     // Tout mes boutons.
@@ -8,11 +9,13 @@ window.addEventListener("DOMContentLoaded", function() {
     var take_photo = document.getElementById('snap');
     var back_webcam = document.getElementById('back_webcam');
     var back_upload = document.getElementById('back_upload');
+
+    // mes filtres.
+    var filtres = document.getElementById('filtre');
+
+    // Champs formulaires.
     var name = document.getElementById('name');
     var description = document.getElementById('description');
-    var canvas_upload = document.getElementById('canvas_upload');
-    var filtres = document.getElementById('filtre');
-    var f1 = document.getElementById('f1');
 
     if (canvas)
     {
@@ -23,6 +26,8 @@ window.addEventListener("DOMContentLoaded", function() {
         var context_canvas_upload = canvas_upload.getContext('2d');
     }
 
+
+    // Partie config WEBCAM avec le flux video et fonction en cas d'erreur.
     var mediaConfig = {video: true};
     var error_webcam = function(error) {
         console.log('Webcam non disponible, afficher l\'upload', error);
@@ -35,9 +40,13 @@ window.addEventListener("DOMContentLoaded", function() {
         }
     };
 
+    // Recuperation de la webcam.
     if(navigator.getUserMedia)
     { // Standard
-        navigator.getUserMedia(mediaConfig, function(stream) {video.src = stream; video.play();}, error_webcam);
+        navigator.getUserMedia(mediaConfig, function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+             video.play();
+         }, error_webcam);
     }
     else if(navigator.webkitGetUserMedia)
     { // WebKit-prefixed
@@ -54,44 +63,9 @@ window.addEventListener("DOMContentLoaded", function() {
         }, error_webcam);
     }
 
-    if (f1.style.display != "none")
-    {
-        f1.addEventListener('click', function() {
-            var filtre = new Image();
-            filtre.src = "hatvert.png";
-
-            if (canvas)
-            {
-                filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
-            }
-            else if (canvas_upload)
-            {
-                filtre.onload = function () {context_canvas_upload.drawImage(filtre, 280, 0, 150, 150);}
-            }
-        });
-    }
-
-    if (f2.style.display != "none")
-    {
-        f2.addEventListener('click', function() {
-            var filtre = new Image();
-            filtre.src = "filtre/clementine.png";
-
-            if (canvas)
-            {
-                filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
-            }
-            else if (canvas_upload)
-            {
-                filtre.onload = function () {context_canvas_upload.drawImage(filtre, 280, 0, 150, 150);}
-            }
-        });
-    }
-
-
     if (canvas_upload)// Dans le cas ou l'upload a ete fait.
     {
-        filtres.style.display = "block";
+        s.style.display = "block";
         save_photo.style.display = "block";
         back_upload.style.display = "block";
         name.style.display = "block";
@@ -100,9 +74,7 @@ window.addEventListener("DOMContentLoaded", function() {
         var context_canvas_upload = canvas_upload.getContext('2d');
         var img_upload = new Image();
         img_upload.src =  "upload/image";
-        img_upload.onload = function() {
-        context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);
-        }
+        img_upload.onload = function(){context_canvas_upload.drawImage(img_upload, 0, 0, 600, 450);}
     }
 
 
@@ -119,7 +91,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
             filtre.onload = function () {context.drawImage(filtre, 280, 0, 150, 150);}
     */
-
             context.drawImage(video, 0, 0, 600, 450);
             filtres.style.display = "block";
             canvas.style.display = "block";
@@ -162,13 +133,4 @@ window.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-/*
-    document.getElementById('submit_upload').addEventListener('click', function() {
-        var image_uploaded = NewImage();
-        image_uploaded.src = 'upload/photo20161031111152';
-        context.drawImage(image_uploaded, 0, 0, 600, 450);
-        canvas.style.display = "block";
-        video.style.display = "none";
-    });
-*/
 }, false);

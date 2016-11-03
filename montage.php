@@ -5,6 +5,7 @@ include_once('connect_bdd.php');
 
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
+include_once('upload.php');
 include_once('webcam.php');
 
 ?>
@@ -20,6 +21,7 @@ include_once('webcam.php');
         <link rel="stylesheet" href="css/signin.css" type="text/css" />
         <link rel="stylesheet" href="css/montage.css" type="text/css" />
         <script type="text/javascript" src="script/webcam.js"></script>
+        <script type="text/javascript" src="script/filtre.js"></script>
     </head>
     <body>
         <?php include_once("include/header.php"); ?>
@@ -93,7 +95,6 @@ include_once('webcam.php');
                             else { //Si l'upload a ete fait ?>
                                 <canvas id="canvas_upload" width="600" height="450"></canvas>
                             <?php } ?>
-
                         </div>
                             <input type="text" name="name" id="name" placeholder="nom" class="hidden" required form="form_save_photo">
                             <textarea name="description" id="description" rows="4" cols="40" class="hidden" placeholder="description" form="form_save_photo"></textarea>

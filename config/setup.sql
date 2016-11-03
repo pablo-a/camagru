@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS image (
 	creation_time DATETIME NOT NULL,
 	comments_nb INT NOT NULL DEFAULT 0,
 	likes_nb INT NOT NULL DEFAULT 0,
-	name VARCHAR(30) NOT NULL,
+	name VARCHAR(100) NOT NULL,
 	description TEXT,                            -- champ facultatif
 	PRIMARY KEY (id),
 	FOREIGN KEY (owner) REFERENCES user (id)     -- le champs owner refere a un id dans la table user.
