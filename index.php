@@ -36,6 +36,7 @@ function user_exists($pseudo, $bdd)
 		<link rel="stylesheet" href="css/signin.css" type="text/css" />
 		<link rel="stylesheet" href="css/index.css" type="text/css"  />
 		<script type="text/javascript" src="script/display_signin.js"></script>
+		<script type="text/javascript" src="script/carroussel.js"></script>
 	</head>
 	<body>
 
@@ -45,6 +46,25 @@ function user_exists($pseudo, $bdd)
 		<div class="body">
 			<?php include_once("include/signin.php"); //Formulaire de connexion ?>
 			<br />
+			<br />
+				<div id="carroussel">
+					<a href="#"><img src="img/prev.png" alt="previous" id="previous"/></a>
+					<ul>
+
+				<?php
+				$get_photos = $bdd->query("SELECT * from image");
+				while ($row = $get_photos->fetch())
+				{
+					echo '<li><img src="' . $row['location'] . '" alt="' . $row['description'] .
+		            '" class = "carroussel_photos" height="450" width="600"/></li>';
+				}
+				$get_photos->closeCursor();
+				?>
+
+					</ul>
+					<a href="#"><img src="img/next.png" alt="next" id="next" /></a>
+				</div>
+			<br>
 			<div class="footer">
 				<p>pabril copyright</p>
 			</div>
@@ -86,6 +106,7 @@ function user_exists($pseudo, $bdd)
 
 //AFFICHE TOUS LES USERS DANS UN TABLEAU
 // TODO: enlever cette partie plus tard pour mettre un carroussel d'images.
+/*
 $query = $bdd->query('SELECT * FROM user');
 echo '<table>';
 echo '<tr><th>nom</th><th>id</th><th>mail</th></tr>';
@@ -95,7 +116,7 @@ while ($data = $query->fetch())
 		$data['mail'] .'</td></tr>';
 }
 $query->closeCursor();
-
+*/
 
 
 ?>
