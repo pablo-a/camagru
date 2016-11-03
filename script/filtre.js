@@ -37,26 +37,27 @@ window.addEventListener("DOMContentLoaded", function() {
 
     function change_filtre(filtre) {
         if (canvas) {
-            canvas.drawImage(canvas_backup, 0, 0, 600, 450);
-            canvas.drawImage(filtre, 250, 0, 120, 120);
+            context.drawImage(canvas_backup, 0, 0, 600, 450);
+            context.drawImage(filtre, 250, 0, 120, 120);
         }
         else {
-            canvas_upload.drawImage(canvas_backup, 0, 0, 600, 450);
-            canvas_upload.drawImage(filtre, 250, 0, 120, 120);
+            context_canvas_upload.drawImage(canvas_backup, 0, 0, 600, 450);
+            context_canvas_upload.drawImage(filtre, 250, 0, 120, 120);
         }
     }
 
 
     var radios = document.getElementsByName('filtre');
     var image = document.getElementsByName('image_filtre');
-    for (var i = 0; i < image.length; i++) {
-        console.log(image[i].src);
-    }
-
-
 
     for (var i = 0; i < radios.length; i++) {
-        radios[i].addEventListener('click', function() {
+        radios[i].addEventListener('click', (function(i) {
+            return function () {
+                var filtre = new Image();
+                filtre.src = image[i].src;
+                filtre.onload = change_filtre(filtre);
+            };
+            })(i));
             //var selector_img = 'img[alt=f' + radios[i].id + ']';
             //console.log('img[alt=f' + radios[i].id + ']');
             //var image_filtre = document.querySelector(selector_img);
@@ -64,12 +65,12 @@ window.addEventListener("DOMContentLoaded", function() {
             for (var i = 0; i < image.length; i++) {
                 console.log(image[i].alt);
             }
-            */
+
             var filtre = new Image();
             filtre.src = image[1].src;
             filtre.onload = change_filtre(filtre);
+            */
 
-        })
     }
 
 

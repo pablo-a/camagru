@@ -71,7 +71,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
     if (canvas_upload)// Dans le cas ou l'upload a ete fait.
     {
-        s.style.display = "block";
+        filtres.style.display = "block";
         save_photo.style.display = "block";
         back_upload.style.display = "block";
         name.style.display = "block";
