@@ -4,19 +4,45 @@ session_start();
 include_once('connect_bdd.php');
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
-function get_photo_location_by_id($id, $bdd) {
+function get_photo_by_id($id, $bdd) {
     $query_get_photo_location = $bdd->prepare("SELECT * FROM image WHERE id = ?");
     $query_get_photo_location->execute(array($id));
     $result = $query_get_photo_location->fetch();
     if ($result) {
-        return result['location'];
+        return $result;
     }
     else {
         return NULL;
     }
 }
 
-if (extract($_GET) && $likeid)
+function get_user_by_id ($id, $bdd) {
+    $query_get_user = $bdd->prepare("SELECT * FROM user where id = ?");
+    $query_get_user->execute(array($id));
+    if ($query_get_user->rowCount() == 1)
+    {
+        return $query_get_user->fetch();
+    }
+    else {
+        return NULL;
+    }
+}
+
+if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) {
+    //verif si commentaire bien OK
+
+
+    //ajout commentaire a la base de donnees.
+    $insert_comment = $bdd->prepare("INSERT INTO comment (content, author, creation_time, image_origin)
+                    VALUES (:content, :author, :creation_time, :image_origin)");
+    $result_insert = $insert_comment->execute(array('content' => $comment,
+                                                    'author' => $_SESSION['user_id'],
+                                                    'creation_time' => date("YmdHis"),
+                                                    'image_origin' => $_GET['id']));
+
+}
+
+else if (isset($_GET) && extract($_GET) && $likeid)
 {
 
     $check_already_liked = $bdd->prepare("SELECT COUNT(*) AS nb_like from likes WHERE owner = ? AND image = ?");
@@ -64,10 +90,40 @@ if (extract($_GET) && $likeid)
             <h3>regardez les jolies photos.</h3>
             <?php
             if (extract($_GET) && $id)
-            { ?>
-                <?php echo $var ?>
-                <!--affichage d'une photo et de ses infos. -->
-                    <img src="  " alt="" />
+            {
+                $photo = get_photo_by_id($id, $bdd);
+                if (!$photo) {
+                    echo "<script>alert('photo non trouvee')</script>";
+                }
+                else {
+                    echo "name : " . $photo['name'] . "<br>";
+                    echo "description : " . $photo['description'] . "<br>";
+                    echo $photo['likes_nb'] . " likes<br>";
+                    echo '<img src="' . $photo['location'] . '" alt="photo" /><br>';
+                }
+
+            $get_comments = $bdd->prepare("SELECT * FROM comment WHERE image_origin = ? ORDER BY creation_time");
+            $get_comments->execute(array($photo['id']));
+            if ($get_comments->rowCount() > 0) {
+                $user = get_user_by_id($_SESSION['user_id'], $bdd);
+                while ($row = $get_comments->fetch())
+                {
+                    echo $user['pseudo'] . " (" . $row['creation_time'] . ") : ";
+                    echo $row['content'] . "<br>";
+                }
+            }
+            else {
+                echo "Pas encore de commentaires.";
+            }
+            $get_comments->closeCursor();
+            ?>
+
+            <form action="#" method="post">
+                <input type="text" name="comment" value="">
+                <input type="submit" name="submit" value="Commenter">
+            </form>
+
+
 
             <?php
             }

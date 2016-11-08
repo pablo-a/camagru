@@ -101,7 +101,7 @@ include_once('webcam.php');
                         $query_photos->execute(array($_SESSION['user_name']));
                         while ($row = $query_photos->fetch())
                         {
-                            echo '<a href="gallerie.php?id_photo=' . $row['id'] . '"><img src="' .
+                            echo '<a href="gallerie.php?id=' . $row['id'] . '"><img src="' .
                             $row['location'] . '" alt="' . $row['name'] . '" title="' .
                             $row['description'] . '" class="mini_photos"/></a>';
                         }
