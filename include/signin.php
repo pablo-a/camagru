@@ -43,6 +43,7 @@
     				{
     					display_deconnected();
     					$_SESSION['user_name'] = $_POST['pseudo'];
+                        $_SESSION['user_id'] = $result['id'];
                         unset($_POST);
     					echo "<h2>Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !</h2>";
     				}

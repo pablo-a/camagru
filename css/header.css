@@ -12,6 +12,8 @@ header {
 	text-decoration: underline;
 	background-color: green;
 	padding-top: 8px;
+
+	box-sizing: content-box;
 }
 
 header a {

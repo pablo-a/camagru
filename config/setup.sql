@@ -61,6 +61,16 @@ CREATE TABLE IF NOT EXISTS filtre (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS likes (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	owner INT UNSIGNED NOT NULL,
+	image INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (owner) REFERENCES user(id),
+	FOREIGN KEY (image) REFERENCES image(id)
+) ENGINE=InnoDB;
+
+
 INSERT INTO User (pseudo, password, mail, creation_time, active, admin)
 	VALUES ('pablo', 'pablo', 'pablo@abril.fr', 20160927111111, 1, 1);
 
