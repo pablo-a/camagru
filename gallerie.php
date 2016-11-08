@@ -28,7 +28,8 @@ function get_user_by_id ($id, $bdd) {
     }
 }
 
-if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) {
+if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) { // COMMENT
+
     //verif si commentaire bien OK
 
 
@@ -39,11 +40,24 @@ if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) {
                                                     'author' => $_SESSION['user_id'],
                                                     'creation_time' => date("YmdHis"),
                                                     'image_origin' => $_GET['id']));
+    $insert_comment->closeCursor();
+    $update_comment_nb = $bdd->prepare("UPDATE image SET comments_nb = comments_nb + 1 WHERE id = ?");
+    $update_comment_nb->execute(array($_GET['id']));
+    $update_comment_nb->closeCursor();
 
+    //ENVOI D'UN MAIL AU PROPRIETAIRE DE LA PHOTO
+    $user = $bdd->query("SELECT mail from user where id = (SELECT owner from image WHERE id = " . $_GET['id'] . ")");
+    $user_email = $user->fetch();
+    $mail = $user_email['mail'];
+    $subject = "Quelqu'un a commente une de vos photos !";
+    $url = "localhost:8080/camagru/gallerie.php?id=" . $_GET['id'];
+    $content = "L'utilisateur " . $_SESSION['user_name'];
+    $content .= " a commente une de vos photos :\n" . $url;
+    mail($mail, $subject, $content);
+    $user->closeCursor();
 }
 
-else if (isset($_GET) && extract($_GET) && $likeid)
-{
+else if (isset($_GET) && extract($_GET) && $likeid) { // LIKE
 
     $check_already_liked = $bdd->prepare("SELECT COUNT(*) AS nb_like from likes WHERE owner = ? AND image = ?");
     $check_already_liked->execute(array($_SESSION['user_id'], $likeid));
@@ -61,7 +75,7 @@ else if (isset($_GET) && extract($_GET) && $likeid)
         $query_insert_like->closeCursor();
     }
     else {
-        echo "<script>alert('already_liked');</script>";
+        echo "<script>alert('already liked');</script>";
     }
 }
 
@@ -75,9 +89,8 @@ else if (isset($_GET) && extract($_GET) && $likeid)
         <script type="text/javascript" src="script/display_signin.js"></script>
         <link rel="stylesheet" href="css/header.css" type="text/css" />
         <link rel="stylesheet" href="css/navbar.css" type="text/css" />
-        <link rel="stylesheet" href="css/signin.css" type="text/css" />
         <link rel="stylesheet" href="css/gallerie.css" type="text/css" />
-        <script type="text/javascript" src="script/gallerie.js"></script>
+        <link rel="stylesheet" href="css/signin.css" type="text/css" />
     </head>
     <body>
         <?php include_once("include/header.php"); ?>
@@ -102,30 +115,28 @@ else if (isset($_GET) && extract($_GET) && $likeid)
                     echo '<img src="' . $photo['location'] . '" alt="photo" /><br>';
                 }
 
-            $get_comments = $bdd->prepare("SELECT * FROM comment WHERE image_origin = ? ORDER BY creation_time");
-            $get_comments->execute(array($photo['id']));
-            if ($get_comments->rowCount() > 0) {
-                $user = get_user_by_id($_SESSION['user_id'], $bdd);
-                while ($row = $get_comments->fetch())
-                {
-                    echo $user['pseudo'] . " (" . $row['creation_time'] . ") : ";
-                    echo $row['content'] . "<br>";
+                $get_comments = $bdd->prepare("SELECT * FROM comment WHERE image_origin = ? ORDER BY creation_time");
+                $get_comments->execute(array($photo['id']));
+                if ($get_comments->rowCount() > 0) {
+                    $user = get_user_by_id($_SESSION['user_id'], $bdd);
+                    while ($row = $get_comments->fetch())
+                    {
+                        echo $user['pseudo'] . " (" . $row['creation_time'] . ") : ";
+                        echo $row['content'] . "<br>";
+                    }
                 }
-            }
-            else {
-                echo "Pas encore de commentaires.";
-            }
-            $get_comments->closeCursor();
-            ?>
+                else {
+                    echo "Pas encore de commentaires.";
+                }
+                $get_comments->closeCursor();
 
+                if (!empty($_SESSION['user_name'])) { ?>
             <form action="#" method="post">
                 <input type="text" name="comment" value="">
                 <input type="submit" name="submit" value="Commenter">
             </form>
-
-
-
-            <?php
+<?php
+                }
             }
             else { // Affichage de toutes les photos.
                 $array_query[] = "SELECT * FROM image ORDER BY creation_time";
@@ -146,7 +157,7 @@ else if (isset($_GET) && extract($_GET) && $likeid)
                     echo '<a href="?id=' . $row['id'] . '">';
                     echo '<img src="' . $row['location'] . '" alt="photo" /></a>';
                     echo '<div class="description">' . $row['likes_nb'] . ' likes & ' .
-                    $row['comments_nb'] . " comments<br \><br \>". $row['name'] . '</div>
+                    $row['comments_nb'] . " comments<br \><br \><b>". $row['name'] . '</b></div>
                     </div><a href="?likeid=' . $row['id'] .'">
                     <img src="img/like.png" width="35px" height="50px" class="like"\></a></div>';
                 }
