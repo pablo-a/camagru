@@ -56,7 +56,7 @@ function user_exists($pseudo, $bdd)
 				while ($row = $get_photos->fetch())
 				{
 					echo '<li><img src="' . $row['location'] . '" alt="' . $row['description'] .
-		            '" class = "carroussel_photos" height="450" width="600"/></li>';
+		            '" class = "carroussel_photos" height="600" width="800"/></li>';
 				}
 				$get_photos->closeCursor();
 				?>

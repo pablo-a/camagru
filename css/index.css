@@ -38,9 +38,10 @@ th {
 
 #carroussel{
     position:relative;
-    height: 450px;
-    width: 700px;
-    margin:auto;
+    height: 600px;
+    width: 900px;
+    margin-top: 10%;
+	margin-left: 25%;
 }
 #carroussel ul li{
     position:absolute;
@@ -51,8 +52,8 @@ th {
 #previous , #next {
 	position: absolute;
 	width: 50px;
-	height: 250px;
-	top: 100px;
+	height: 200px;
+	top: 200px;
 }
 
 #previous:hover, #next:hover {
@@ -60,5 +61,5 @@ th {
 }
 
 #next {
-	left: 650px;
+	left: 850px;
 }

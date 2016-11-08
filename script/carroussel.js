@@ -30,6 +30,7 @@ window.addEventListener('load', function() {
     }
 
     prev.addEventListener('click', function() {
+        clearInterval(prev);
         last_index = current_index;
         current_index--;
         if (current_index < 0) {
@@ -39,7 +40,7 @@ window.addEventListener('load', function() {
         function frame_prev() {
             if (opacity == 0) {//quand c'est fini.
                 opacity = 10;
-                clearInterval(prev)
+                clearInterval(prev);
             }
             else {//en cours d'animation.
                 opacity -= 1;
@@ -51,6 +52,7 @@ window.addEventListener('load', function() {
     });
 
     next.addEventListener('click', function() {
+        clearInterval(next);
         last_index = current_index;
         current_index++;
         if (current_index == nb_image) {
@@ -61,7 +63,7 @@ window.addEventListener('load', function() {
         function frame_next() {
             if (opacity == 0) {//quand c'est fini.
                 opacity = 10;
-                clearInterval(next)
+                clearInterval(next);
             }
             else {//en cours d'animation.
                 opacity -= 1;
