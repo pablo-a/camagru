@@ -100,14 +100,29 @@ include_once('include/functions_gallerie.php');
                         <input type="text" id="range_value" value="<?php echo $_GET['photo_per_page']; ?>">
                         <br>
                         trier par :
+
                         <select name="tri">
-                            <option value="creation_time">les plus recentes</option>
-                            <option value="creation_time DESC">les moins recentes</option>
-                            <option value="owner">par auteur</option>
-                            <option value="name">par nom</option>
-                            <option value="likes_nb DESC">par nombre de likes</option>
-                            <option value="comments_nb DESC">par nombre de commentaires</option>
+                            <option value="creation_time" <?php if ($_GET['tri'] == "creation_time") {echo "selected";}?>>les plus recentes</option>
+                            <option value="creation_time DESC" <?php if ($_GET['tri'] == "creation_time DESC") {echo "selected";}?>>les moins recentes</option>
+                            <option value="owner" <?php if ($_GET['tri'] == "owner") {echo "selected";}?>>par auteur</option>
+                            <option value="name" <?php if ($_GET['tri'] == "name") {echo "selected";}?>>par nom</option>
+                            <option value="likes_nb DESC" <?php if ($_GET['tri'] == "likes_nb DESC") {echo "selected";}?>>par nombre de likes</option>
+                            <option value="comments_nb DESC" <?php if ($_GET['tri'] == "comments_nb DESC") {echo "selected";}?>>par nombre de commentaires</option>
                         </select>
+                        <br>
+                        acceder aux photos de :
+                        <input list="pseudo" name="pseudo" value="<?php echo $_GET['pseudo']; ?>">
+                        <datalist id="pseudo">
+                            <?php
+                            $all_users = $bdd->query("SELECT pseudo from user");
+                            while ($row = $all_users->fetch())
+                            {
+                                echo "<option value='" . $row['pseudo'] . "'>";
+                            }
+                            $all_users->closeCursor();
+
+                             ?>
+                        </datalist>
                         <br>
                         <input type="submit" value="Rechercher">
                         <input type="reset" name="reset">
@@ -117,8 +132,27 @@ include_once('include/functions_gallerie.php');
 
 
 <?php
+
+
+                // On definit le mode de tri des photos
+                $tri = $_GET['tri'];
+                if (!$_GET['tri']) {
+                    $tri = "creation_time";
+                }
+
+                // SI ON VEUT UN UTILISATEUR EN PARTICULIER
+                if ($_GET['pseudo'] && ($user = get_user_by_pseudo($_GET['pseudo'], $bdd)) != NULL) {
+                    $requete_pseudo = " WHERE owner = " . $user['id'] . " ";
+                }
+                else {
+                    $requete_pseudo = " ";
+                    banner_alert("ce pseudo n'existe pas.");
+                }
+
+
+
                 // On recupere toute nos images une fois.
-                $query_all_photo = $bdd->query("SELECT * FROM image ORDER BY creation_time");
+                $query_all_photo = $bdd->query("SELECT * FROM image" . $requete_pseudo);
                 $nb_photos = $query_all_photo->rowCount();
                 $query_all_photo->closeCursor();
 
@@ -148,14 +182,15 @@ include_once('include/functions_gallerie.php');
                 // On definit la premiere image a afficher selon la page.
                 $first_image = ($current_page - 1) * $photo_per_page;
 
-                // On definit le mode de tri des photos
-                $tri = $_GET['tri'];
-                if (!$_GET['tri']) {
-                    $tri = "creation_time";
-                }
 
 
-                $requete_page = "SELECT * FROM image ORDER BY " . $tri ." LIMIT " . $first_image . ", " . $photo_per_page;
+
+
+
+
+
+                $requete_page  = "SELECT * FROM image" . $requete_pseudo . "ORDER BY " .
+                                    $tri ." LIMIT " . $first_image . ", " . $photo_per_page;
 
 
                 // SI D'AUTRES CRITERE ON LES PLACE ICI ET MODIF DE $requete_page.
@@ -192,7 +227,7 @@ include_once('include/functions_gallerie.php');
                         }
                         else {
                             echo "<li><a href='?page=" . $i . "&photo_per_page=" . $photo_per_page .
-                            "&tri=" . $tri . "'>" . $i . "</a></li>";
+                            "&tri=" . $tri . "&pseudo=" . $_GET['pseudo'] . "'>" . $i . "</a></li>";
                         }
                     }
                     echo "</ul></div>";

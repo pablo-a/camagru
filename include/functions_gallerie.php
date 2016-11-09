@@ -24,6 +24,19 @@ function get_user_by_id ($id, $bdd) {
     }
 }
 
+function get_user_by_pseudo($pseudo, $bdd) {
+    $query_get_user = $bdd->prepare("SELECT * FROM user where pseudo = ?");
+    $query_get_user->execute(array($pseudo));
+    if ($query_get_user->rowCount() == 1)
+    {
+        return $query_get_user->fetch();
+    }
+    else {
+        return NULL;
+    }
+}
+
+
 if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) { // COMMENT A INSERER
 
     //verif si commentaire bien OK
