@@ -27,7 +27,7 @@ function get_user_by_id ($id, $bdd) {
 if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) { // COMMENT A INSERER
 
     //verif si commentaire bien OK
-    $pattern = "/[^a-zA-Z1-9-]/";
+    $pattern = "/[^a-zA-Z1-9- ]/";
 
     if (strlen($comment) > 200) {
       banner_alert("Commentaire trop long.");

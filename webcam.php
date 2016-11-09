@@ -16,7 +16,7 @@ function get_filtre_by_id($bdd, $id) {
 if (extract($_POST) && $hidden) // Photo recue du formulaire (upload ou webcam)
 {
     //GESTION DES ERREURS FORMULAIRE.
-    $pattern = "/[^a-zA-Z1-9-]/";
+    $pattern = "/[^a-zA-Z1-9- ]/";
     if (empty($name)) {
         banner_alert("Vous devez renseigner un nom a votre photo pour l'enregistrer.");
     }

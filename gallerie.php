@@ -19,6 +19,11 @@ include_once('include/functions_gallerie.php');
         <title>Montage Photo Camagru</title>
         <script type="text/javascript" src="script/display_signin.js"></script>
         <script type="text/javascript" src="script/alert.js"></script>
+        <script type="text/javascript">
+            function updateRangeValue(val) {
+                document.getElementById('range_value').value = val;
+            }
+        </script>
         <link rel="stylesheet" href="css/alert.css" type="text/css" />
         <link rel="stylesheet" href="css/header.css" type="text/css" />
         <link rel="stylesheet" href="css/navbar.css" type="text/css" />
@@ -73,7 +78,7 @@ include_once('include/functions_gallerie.php');
                 $get_comments->closeCursor();
 
                 if (!empty($_SESSION['user_name'])) { ?>
-            <form action="#" method="post">
+            <form action="#" method="post" class="single_photo">
                 <input type="text" name="comment" value="">
                 <input type="submit" name="submit" value="Commenter">
             </form>
@@ -82,27 +87,38 @@ include_once('include/functions_gallerie.php');
             }
 
 
-           else { // AFFICHAGE DE TOUTES LES PHOTOS DE LA GALLERIE.?>
+           else { // AFFICHAGE DE TOUTES LES PHOTOS DE LA GALLERIE.
+
+
+               ?>
 
                 <!--      FILTRES POUR AFFICHER LES PHOTOS              -->
                 <div class="filtre_recherche">
-                    <form action="#" method="get">
+                    <form action="" method="get">
                         nombre de photos par page
-                        <input type="range" name="nb" value="8" min="1" max="30" step="2">
+                        <input type="range" name="photo_per_page" value="<?php echo $_GET['photo_per_page']; ?>" min="1" max="30" step="2" onchange="updateRangeValue(this.value);">
+                        <input type="text" id="range_value" value="<?php echo $_GET['photo_per_page']; ?>">
                         <br>
+                        trier par :
+                        <select name="tri">
+                            <option value="creation_time">les plus recentes</option>
+                            <option value="creation_time DESC">les moins recentes</option>
+                            <option value="owner">par auteur</option>
+                            <option value="name">par nom</option>
+                            <option value="likes_nb DESC">par nombre de likes</option>
+                            <option value="comments_nb DESC">par nombre de commentaires</option>
+                        </select>
+                        <br>
+                        <input type="submit" value="Rechercher">
                         <input type="reset" name="reset">
                     </form>
                 </div>
                 <hr>
 
 
-<?php           $array_query[] = "SELECT * FROM image ORDER BY creation_time";
-                $array_query[] = "SELECT * FROM image ORDER BY creation_time DESC";
-                $array_query[] = "SELECT * FROM image ORDER BY name";
-                $array_query[] = "SELECT * FROM image ORDER BY author";
-
+<?php
                 // On recupere toute nos images une fois.
-                $query_all_photo = $bdd->query($array_query[0]);
+                $query_all_photo = $bdd->query("SELECT * FROM image ORDER BY creation_time");
                 $nb_photos = $query_all_photo->rowCount();
                 $query_all_photo->closeCursor();
 
@@ -117,7 +133,8 @@ include_once('include/functions_gallerie.php');
                 // Nombre de page qu'on va afficher.
                 $nb_page = ceil($nb_photos / $photo_per_page);
 
-                // On recupere la page a afficher.
+
+                // On definit la page a afficher.
                 if (isset($_GET['page']) && intval($_GET['page']) > 0) {
                     $current_page = intval($_GET['page']);
                     if ($current_page > $nb_page) {
@@ -128,11 +145,17 @@ include_once('include/functions_gallerie.php');
                     $current_page = 1;
                 }
 
-
-                //Pagination ?
-
+                // On definit la premiere image a afficher selon la page.
                 $first_image = ($current_page - 1) * $photo_per_page;
-                $requete_page = "SELECT * FROM image ORDER BY creation_time DESC LIMIT " . $first_image . ", " . $photo_per_page;
+
+                // On definit le mode de tri des photos
+                $tri = $_GET['tri'];
+                if (!$_GET['tri']) {
+                    $tri = "creation_time";
+                }
+
+
+                $requete_page = "SELECT * FROM image ORDER BY " . $tri ." LIMIT " . $first_image . ", " . $photo_per_page;
 
 
                 // SI D'AUTRES CRITERE ON LES PLACE ICI ET MODIF DE $requete_page.
@@ -168,7 +191,8 @@ include_once('include/functions_gallerie.php');
                             echo '<li><a class="active" href="#">' . $current_page . '</a></li>';
                         }
                         else {
-                            echo "<li><a href='?page=" . $i . "'>" . $i . "</a></li>";
+                            echo "<li><a href='?page=" . $i . "&photo_per_page=" . $photo_per_page .
+                            "&tri=" . $tri . "'>" . $i . "</a></li>";
                         }
                     }
                     echo "</ul></div>";
