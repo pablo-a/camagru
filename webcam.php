@@ -3,9 +3,8 @@
 
 
 
-if (extract($_POST) && $hidden) // Photo recue du formulaire (upload ou webcam)
+if (extract($_POST) && $hidden && isset($filtre) && !empty($name)) // Photo recue du formulaire (upload ou webcam)
 {
-
     // creation d'un repertoire au nom de l'utilisateur si il n'en a pas.
     if (!is_dir("img/" . $_SESSION['user_name']))
     {
@@ -63,6 +62,14 @@ if (extract($_POST) && $hidden) // Photo recue du formulaire (upload ou webcam)
         unlink("upload/image");
     }
 
+}
+
+else if (isset($_POST) && $hidden && empty($filtre)) {
+    banner_alert("vous devez selectionner un filtre pour enregistrer votre photo.");
+}
+
+elseif (isset($_POST) && $hidden && empty($name)) {
+    banner_alert("Vous devez renseigner un nom a votre photo pour l'enregistrer.");
 }
 
 

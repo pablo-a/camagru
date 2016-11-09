@@ -41,7 +41,7 @@ include_once('webcam.php');
     if (isset($_GET['err_upload']))
     {
         $err = array("erreur d'upload", "fichier trop gros", "mauvais type de fichier");
-        echo "<script>alert('Erreur : " . $err[$_GET['err_upload'] - 1] . "');</script>";
+        banner_alert("Erreur : " . $err[$_GET['err_upload'] - 1]);
     }
 
     ?>

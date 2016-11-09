@@ -66,6 +66,7 @@
     else if (isset($_GET['signin']) && $_GET['signin'] == 'out') //DECONNEXION
     {
     		$_SESSION['user_name'] = "";
+            $_SESSION['user_id'] = 0;
     		display_connected();
     }
 

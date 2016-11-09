@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS likes (
 
 INSERT INTO User (pseudo, password, mail, creation_time, active, admin)
 	VALUES ('pablo', 'adca72a008cfd65ceb47148b9be37d2c0f6da0b1aaa89a4743f5f6fba3950649a01c9ed0e4b7203f85a785a6f552b6d321a1894cdd1673756a3d6f3945a94713', 'pablo@abril.fr', 20160927111111, 1, 1),
-			('qwer', '4a31abe164349501e9954650f743251065dd6a7402565ddac12ecccf44fc328e78b08259e51b3ec15d5136fedb27f4db00dbc232b25507637b9aa99f7dfc39ea', 'pabloabril75@gmail.fr', 20161111111111, 1 , 1);
+			('qwer', '4a31abe164349501e9954650f743251065dd6a7402565ddac12ecccf44fc328e78b08259e51b3ec15d5136fedb27f4db00dbc232b25507637b9aa99f7dfc39ea', 'pabloabril75@gmail.com', 20161111111111, 1 , 1);
 
 INSERT INTO image (location, owner, creation_time, name)
 	VALUES ('../orange.jpg', 1, 20160909000000, 'orange'),
