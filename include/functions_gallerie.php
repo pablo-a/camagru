@@ -27,11 +27,11 @@ function get_user_by_id ($id, $bdd) {
 if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) { // COMMENT A INSERER
 
     //verif si commentaire bien OK
+    $pattern = "/[^a-zA-Z1-9-]/";
+
     if (strlen($comment) > 200) {
       banner_alert("Commentaire trop long.");
     }
-
-    $pattern = "/[^a-zA-Z1-9-]/";
     elseif (preg_match($pattern, $comment)) {
         banner_alert("caracteres interdits ! seul les lettres et chiffres sont acceptes");
     }
@@ -95,13 +95,10 @@ else if (isset($_GET['likeid']) && !empty($_GET['likeid']) && extract($_GET)) { 
         $query_insert_like = $bdd->prepare("INSERT INTO likes (owner, image) VALUES (?, ?)");
         $query_insert_like->execute(array($_SESSION['user_id'], $likeid));
         $query_insert_like->closeCursor();
-        banner_alert("Votre like a bien ete pris en compte.");
     }
     else {
         banner_alert('already liked');;
     }
 }
-
-
 
  ?>

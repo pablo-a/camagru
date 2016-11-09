@@ -102,3 +102,47 @@ input[type=text] {
     border-radius: 4px;
     box-sizing: border-box;
 }
+
+/*  PARTIE POUR LA PAGINATION */
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+    color: black;
+	background-color: white;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+ul.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+
+div.center {text-align: center;}
+
+
+.filtre_recherche {
+	width: 96%;
+	border: 1px solid black;
+	border-radius: 10px;
+	margin: 20px 2%;
+	padding: 10px;
+	background-color: #99FF99;
+}
+
+hr	{
+	margin-bottom: 20px;
+}

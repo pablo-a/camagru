@@ -48,7 +48,7 @@ if (extract($_POST) && $hidden) // Photo recue du formulaire (upload ou webcam)
         file_put_contents($location, $file_content);
 
 
-        //fusion de l'image et du filtre.
+        //fusion de l'image et du filtre
         $image_base = imagecreatefrompng($location);
         $filtre = get_filtre_by_id($bdd, $filtre);
         $image_filtre = imagecreatefrompng($filtre['location']);
