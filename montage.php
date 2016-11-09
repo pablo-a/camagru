@@ -115,9 +115,9 @@ include_once('webcam.php');
                      ?>
                 </div>
 <?php }
-else { ?>
-            <h2>vous devez etre connect&eacute pour acceder a la partie montage.</h2>
-<?php  } ?>
+else {
+            banner_alert("Vous devez etre connecte pour acceder a la partie montage.");
+        } ?>
             </div>
         </div>
 

@@ -3,7 +3,6 @@ window.addEventListener("DOMContentLoaded", function() {
     var canvas = document.getElementById('canvas');
     var canvas_upload = document.getElementById('canvas_upload');
     var canvas_backup = document.getElementById('canvas_backup');
-    var context_backup = canvas_backup.getContext('2d');
     var video = document.getElementById('video');
 
     // Tout mes boutons.
@@ -31,6 +30,9 @@ window.addEventListener("DOMContentLoaded", function() {
         canvas_backup.width = canvas_upload.width;
         canvas_backup.height = canvas_upload.height;
     }
+    if (canvas_backup) {
+        var context_backup = canvas_backup.getContext('2d');
+    }
 
 
     // Partie config WEBCAM avec le flux video et fonction en cas d'erreur.
@@ -47,21 +49,21 @@ window.addEventListener("DOMContentLoaded", function() {
     };
 
     // Recuperation de la webcam.
-    if(navigator.getUserMedia)
+    if(navigator.getUserMedia && video)
     { // Standard
         navigator.getUserMedia(mediaConfig, function(stream) {
             video.src = window.URL.createObjectURL(stream);
              video.play();
          }, error_webcam);
     }
-    else if(navigator.webkitGetUserMedia)
+    else if(navigator.webkitGetUserMedia && video)
     { // WebKit-prefixed
         navigator.webkitGetUserMedia(mediaConfig, function(stream){
             video.src = window.URL.createObjectURL(stream);
             video.play();
         }, error_webcam);
     }
-    else if(navigator.mozGetUserMedia)
+    else if(navigator.mozGetUserMedia && video)
     { // Mozilla-prefixed
         navigator.mozGetUserMedia(mediaConfig, function(stream){
             video.src = window.URL.createObjectURL(stream);
@@ -131,18 +133,21 @@ window.addEventListener("DOMContentLoaded", function() {
         description.style.display = "none";
     });
 */
-    save_photo.addEventListener('click', function() {
-        if (!canvas_upload)
-        {
-            var img = canvas.toDataURL();
-            var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
-            document.getElementById('hidden').value = output;
-        }
-        else {
-            var img = canvas_upload.toDataURL();
-            var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
-            document.getElementById('hidden').value = output;
-        }
-    });
+    if (save_photo)
+    {
+        save_photo.addEventListener('click', function() {
+            if (!canvas_upload)
+            {
+                var img = canvas.toDataURL();
+                var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
+                document.getElementById('hidden').value = output;
+            }
+            else {
+                var img = canvas_upload.toDataURL();
+                var output=img.replace(/^data:image\/(png|jpg);base64,/, "");
+                document.getElementById('hidden').value = output;
+            }
+        });
+    }
 
 }, false);
