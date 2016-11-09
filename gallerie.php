@@ -4,6 +4,8 @@ session_start();
 include_once('connect_bdd.php');
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 
+include_once('include/alert.php');
+
 function get_photo_by_id($id, $bdd) {
     $query_get_photo_location = $bdd->prepare("SELECT * FROM image WHERE id = ?");
     $query_get_photo_location->execute(array($id));
@@ -87,6 +89,8 @@ else if (isset($_GET) && extract($_GET) && $likeid) { // LIKE
         <meta charset="utf-8">
         <title>Montage Photo Camagru</title>
         <script type="text/javascript" src="script/display_signin.js"></script>
+        <script type="text/javascript" src="script/alert.js"></script>
+        <link rel="stylesheet" href="css/alert.css" type="text/css" />
         <link rel="stylesheet" href="css/header.css" type="text/css" />
         <link rel="stylesheet" href="css/navbar.css" type="text/css" />
         <link rel="stylesheet" href="css/gallerie.css" type="text/css" />

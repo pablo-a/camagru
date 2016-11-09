@@ -1,6 +1,8 @@
 <?php
 include_once('redirect.php');
 include_once('connect_bdd.php');
+include_once('include/alert.php');
+
 
 function send_confirmation_link($pseudo, $mail)
 {
@@ -50,31 +52,31 @@ if ($nb_var)
 	{
 		switch ($err) {
 			case 1:
-				echo '<h1>certains champs ne sont pas remplis.</h1>';
+				banner_alert("certains champs ne sont pas remplis.");
 				break;
 
 			case 2:
-			echo '<h1>les mots de passe sont differents.</h1>';
+			banner_alert("les mots de passe sont differents.");
 			break;
 
 			case 3:
-			echo '<h1>pseudo deja pris.</h1>';
+			banner_alert("pseudo deja pris.");
 			break;
 
 			case 4:
-			echo '<h1>mail deja pris.</h1>';
+			banner_alert("mail deja pris.");
 			break;
 
 			case 5:
-			echo '<h1>un des champs est trop long.</h1>';
+			banner_alert("un des champs est trop long.");
 			break;
 
 			case 6:
-			echo '<h1>Caracteres interdits dans le pseudo (only letters and numbers)</h1>';
+			banner_alert("Caracteres interdits dans le pseudo (only letters and numbers)");
 			break;
 
 			case 7:
-			echo '<h1>mail non valide</h1>';
+			banner_alert("mail non valide");
 			break;
 
 			default:
@@ -89,7 +91,9 @@ if ($nb_var)
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>okok</title>
+		<title>inscription</title>
+		<script type="text/javascript" src="script/alert.js"></script>
+		<link rel="stylesheet" href="css/alert.css" type="text/css" />
 	</head>
 	<body>
 	<form action="suscribe.php" method="post" accept-charset="utf-8">

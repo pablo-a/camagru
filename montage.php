@@ -3,6 +3,9 @@ session_start();
 //IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
 include_once('connect_bdd.php');
 
+// IMPORTATION DES BANNERS
+include_once('include/alert.php');
+
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
 include_once('upload.php');
@@ -20,6 +23,8 @@ include_once('webcam.php');
         <link rel="stylesheet" href="css/navbar.css" type="text/css" />
         <link rel="stylesheet" href="css/signin.css" type="text/css" />
         <link rel="stylesheet" href="css/montage.css" type="text/css" />
+        <link rel="stylesheet" href="css/alert.css" type="text/css" />
+		<script type="text/javascript" src="script/alert.js"></script>
         <script type="text/javascript" src="script/webcam.js"></script>
         <script type="text/javascript" src="script/filtre.js"></script>
     </head>

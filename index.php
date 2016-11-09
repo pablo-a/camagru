@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_name']))
 
 //IMPORTATION DE LA FONTION DE CONNEXION A LA BDD
 include_once('connect_bdd.php');
+include_once('include/alert.php');
 
 //CONNEXION A LA BDD
 $bdd = connect_bdd($DB_DSN, $DB_USER, $DB_PASSWORD);
@@ -35,6 +36,8 @@ function user_exists($pseudo, $bdd)
 		<link rel="stylesheet" href="css/navbar.css" type="text/css" />
 		<link rel="stylesheet" href="css/signin.css" type="text/css" />
 		<link rel="stylesheet" href="css/index.css" type="text/css"  />
+		<link rel="stylesheet" href="css/alert.css" type="text/css" />
+		<script type="text/javascript" src="script/alert.js"></script>
 		<script type="text/javascript" src="script/display_signin.js"></script>
 		<script type="text/javascript" src="script/carroussel.js"></script>
 	</head>
@@ -77,8 +80,7 @@ function user_exists($pseudo, $bdd)
 
 		if (isset($_GET['sus']) && $_GET['sus'] == "link")
 		{
-			echo "<h3>Votre inscription a bien ete prise en compte. Veuillez
-			trouver le lien de confirmation dans votre boite mail</h3>";
+			banner_alert("Votre inscription a bien ete prise en compte. Veuillez trouver le lien de confirmation dans votre boite mail");
 		}
 		else if (isset($_GET['sus']) && $_GET['sus'] == "activate" && isset($_GET['pseudo']) && !empty($_GET['pseudo']))
 		{
@@ -89,14 +91,14 @@ function user_exists($pseudo, $bdd)
 				$query_activate_account->closeCursor();
 				if (!$result_query)
 				{
-					echo "<h2>Erreur lors de l'activation de votre compte. reessayez ulterieurement.";
+					banner_alert("Erreur lors de l'activation de votre compte. reessayez ulterieurement.");
 				}
 				else {
-					echo "<h3>votre compte est actif !</h3>";
+					banner_alert("votre compte est actif !");
 				}
 			}
 			else {
-				echo "<h3>Le compte a activer n'est pas dans la base de donnee.</h3>";
+				banner_alert("Le compte a activer n'est pas dans la base de donnee.");
 			}
 		}
  ?>

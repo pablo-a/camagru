@@ -45,22 +45,22 @@
     					$_SESSION['user_name'] = $_POST['pseudo'];
                         $_SESSION['user_id'] = $result['id'];
                         unset($_POST);
-    					echo "<h2>Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !</h2>";
+    					banner_alert("Vous etes maintenant connecté " . htmlspecialchars($_SESSION['user_name']) . " !");
     				}
     				else {
-    					echo "<h2>Votre compte n'est pas actif</h2>";
+    					banner_alert("Votre compte n'est pas actif");
     				}
     			}
     			else {
-    					echo "<h2>Bad Password</h2>";
+    					banner_alert("Bad Password");;
     			}
     		}
     		else {
-    			echo "<h2>Error, User not found.</h2>";
+    			banner_alert("Error, User not found.");
     		}
     	}
     	else {
-    			echo "<h2>veuillez remplir tous les champs.</h2>";
+    			banner_alert("veuillez remplir tous les champs.");
     	}
     }
     else if (isset($_GET['signin']) && $_GET['signin'] == 'out') //DECONNEXION
