@@ -16,7 +16,7 @@ include_once('include/functions_gallerie.php');
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Montage Photo Camagru</title>
+        <title>Gallerie</title>
         <script type="text/javascript" src="script/display_signin.js"></script>
         <script type="text/javascript" src="script/alert.js"></script>
         <script type="text/javascript">
@@ -241,6 +241,9 @@ include_once('include/functions_gallerie.php');
                                     $tri . " LIMIT " . $first_image . ", " . $photo_per_page;
 
                 $query_display_page = $bdd->query($requete_page);
+                if ($query_display_page->rowCount() === 0) {
+                    banner_alert("Aucun resultat trouve");
+                }
 
 
                 //AFFICHAGE DU RESULTAT DE LA REQUETE.
