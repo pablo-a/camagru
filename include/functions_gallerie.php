@@ -76,7 +76,7 @@ if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) { // COM
 
 }
 
-else if (isset($_GET['delid']) && !empty($_GET['delid']) && extract($_GET)) { // SUPPRESION PHOTO
+else if (isset($_GET['delid']) && !empty($_GET['delid']) && $_SESSION['user_id'] != 0 && extract($_GET)) { // SUPPRESION PHOTO
     $photo = get_photo_by_id($_GET['delid'], $bdd);
     if ($photo['owner'] != $_SESSION['user_id']) {
         banner_alert("Vous n'etes pas autorise a supprimer cette photo");
@@ -94,24 +94,33 @@ else if (isset($_GET['delid']) && !empty($_GET['delid']) && extract($_GET)) { //
 }
 
 else if (isset($_GET['likeid']) && !empty($_GET['likeid']) && extract($_GET)) { // LIKE
-    $check_already_liked = $bdd->prepare("SELECT COUNT(*) AS nb_like from likes WHERE owner = ? AND image = ?");
-    $check_already_liked->execute(array($_SESSION['user_id'], $likeid));
-    $already_liked = $check_already_liked->fetch();
-    $check_already_liked->closeCursor();
-    echo "user_id = " . $_SESSION['user_id'] . "\n";
-    echo "nb_like = " . $already_liked['nb_like'];
+    
+    if ($_SESSION['user_id'] != 0) { // utilisateur bien connecte
 
-    if ($already_liked['nb_like'] === '0') {
-        $query_like = $bdd->prepare("UPDATE image SET likes_nb = likes_nb + 1 WHERE id = ?");
-        $operation_like = $query_like->execute(array($likeid));
-        $query_like->closeCursor();
-        $query_insert_like = $bdd->prepare("INSERT INTO likes (owner, image) VALUES (?, ?)");
-        $query_insert_like->execute(array($_SESSION['user_id'], $likeid));
-        $query_insert_like->closeCursor();
+        $check_already_liked = $bdd->prepare("SELECT COUNT(*) AS nb_like from likes WHERE owner = ? AND image = ?");
+        $check_already_liked->execute(array($_SESSION['user_id'], $likeid));
+        $already_liked = $check_already_liked->fetch();
+        $check_already_liked->closeCursor();
+        echo "user_id = " . $_SESSION['user_id'] . "\n";
+        echo "nb_like = " . $already_liked['nb_like'];
+
+        if ($already_liked['nb_like'] === '0') {
+            $query_like = $bdd->prepare("UPDATE image SET likes_nb = likes_nb + 1 WHERE id = ?");
+            $operation_like = $query_like->execute(array($likeid));
+            $query_like->closeCursor();
+            $query_insert_like = $bdd->prepare("INSERT INTO likes (owner, image) VALUES (?, ?)");
+            $query_insert_like->execute(array($_SESSION['user_id'], $likeid));
+            $query_insert_like->closeCursor();
+        }
+        else {
+            banner_alert('already liked');;
+        }
     }
+
     else {
-        banner_alert('already liked');;
+        banner_alert("Vous devez etre connecte pour liker une photo.");
     }
+
 }
 
  ?>

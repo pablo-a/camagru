@@ -96,7 +96,7 @@ include_once('include/functions_gallerie.php');
                 <div class="filtre_recherche">
                     <form action="" method="get">
                         nombre de photos par page
-                        <input type="range" name="photo_per_page" value="<?php echo $_GET['photo_per_page']; ?>" min="1" max="30" step="2" onchange="updateRangeValue(this.value);">
+                        <input type="range" name="photo_per_page" value="<?php echo $_GET['photo_per_page']; ?>" min="1" max="30" onchange="updateRangeValue(this.value);">
                         <input type="text" id="range_value" value="<?php echo $_GET['photo_per_page']; ?>">
                         <br>
                         trier par :
@@ -124,8 +124,16 @@ include_once('include/functions_gallerie.php');
                              ?>
                         </datalist>
                         <br>
+                        La description DOIT contenir les mots :
+                        <input type="text" name="word_plus" value="<?php echo $_GET['word_plus']; ?>" placeholder="ex: orange singe">
+                        <br>
+                        La description PEUT contenir les mots :
+                        <input type="text" name="word_normal" value="<?php echo $_GET['word_normal']; ?>" placeholder="ex: chimpanzé">
+                        <br>
+                        La description NE DOIT PAS contenir les mots :
+                        <input type="text" name="word_minus" value="<?php echo $_GET['word_minus']; ?>" placeholder="ex: banane">
+                        <br>
                         <input type="submit" value="Rechercher">
-                        <input type="reset" name="reset">
                     </form>
                 </div>
                 <hr>
@@ -134,25 +142,69 @@ include_once('include/functions_gallerie.php');
 <?php
 
 
-                // On definit le mode de tri des photos
-                $tri = $_GET['tri'];
-                if (!$_GET['tri']) {
-                    $tri = "creation_time";
+                //  TRI DES IMAGES
+
+                $tri_tab[] = "creation_time";
+                $tri_tab[] = "creation_time DESC";
+                $tri_tab[] = "owner";
+                $tri_tab[] = "name";
+                $tri_tab[] = "likes_nb DESC";
+                $tri_tab[] = "comments_nb DESC";
+
+                $tri = "creation_time";
+                if ($_GET['tri'] && in_array((string)$_GET['tri'], $tri_tab, true)) {// egalite des types avec true
+                    $tri = $_GET['tri'];
                 }
 
-                // SI ON VEUT UN UTILISATEUR EN PARTICULIER
+                // TRI UTILISATEUR
+
                 if ($_GET['pseudo'] && ($user = get_user_by_pseudo($_GET['pseudo'], $bdd)) != NULL) {
                     $requete_pseudo = " WHERE owner = " . $user['id'] . " ";
                 }
                 else {
                     $requete_pseudo = " ";
-                    banner_alert("ce pseudo n'existe pas.");
+                    if ($_GET['pseudo']) {
+                        banner_alert("ce pseudo n'existe pas.");
+                    }
+                }
+
+                // RECHERCHE FULLTEXT
+
+                $fulltext = "";
+                $relevant = " ";
+                if ($_GET['word_plus'] || $_GET['word_normal'] || $_GET['word_minus']) {
+                    include_once('include/fulltext.php');
+
+                    $compulsory = get_words($_GET['word_plus'], "+");
+                    $optional = get_words($_GET['word_normal'], "");
+                    $minus = get_words($_GET['word_minus'], "-");
+                    //print_r($compulsory);
+                    //print_r($optional);
+                    //print_r($minus);
+                    $regexp = create_research($compulsory, $optional, $minus);
+                    // POUR LE MOMENT EN DUR
+                    if ($regexp !== NULL) {
+                        if ($requete_pseudo !== " ") {
+                            $fulltext .= "AND ";
+                        }
+                        else {
+                            $fulltext .= " WHERE ";
+                        }
+                        $fulltext .= "MATCH(description) AGAINST('";
+                        $fulltext .= $regexp;
+                        $fulltext .= "' IN BOOLEAN MODE) ";
+                        //on veut aussi trier par pertinence.
+                        $relevant = ", MATCH(description) AGAINST('" . $regexp . "' IN BOOLEAN MODE) AS relevant ";
+                        $tri = "relevant DESC, " . $tri;
+                    }
+                    else {
+                        banner_alert("non valid research");
+                    }
                 }
 
 
-
                 // On recupere toute nos images une fois.
-                $query_all_photo = $bdd->query("SELECT * FROM image" . $requete_pseudo);
+                $query_all_photo = $bdd->query("SELECT * FROM image" . $requete_pseudo . $fulltext);
                 $nb_photos = $query_all_photo->rowCount();
                 $query_all_photo->closeCursor();
 
@@ -183,23 +235,15 @@ include_once('include/functions_gallerie.php');
                 $first_image = ($current_page - 1) * $photo_per_page;
 
 
+                // PREPARATION REQUETE FINALE.
 
-
-
-
-
-
-                $requete_page  = "SELECT * FROM image" . $requete_pseudo . "ORDER BY " .
-                                    $tri ." LIMIT " . $first_image . ", " . $photo_per_page;
-
-
-                // SI D'AUTRES CRITERE ON LES PLACE ICI ET MODIF DE $requete_page.
-
+                $requete_page  = "SELECT *" . $relevant ."FROM image" . $requete_pseudo . $fulltext . "ORDER BY " .
+                                    $tri . " LIMIT " . $first_image . ", " . $photo_per_page;
 
                 $query_display_page = $bdd->query($requete_page);
 
 
-                //AFFICHAGE DE LA REQUETE.
+                //AFFICHAGE DU RESULTAT DE LA REQUETE.
                 while ($row = $query_display_page->fetch())
                 {
                     echo '<div class="responsive_gallery">';
@@ -207,7 +251,7 @@ include_once('include/functions_gallerie.php');
                     echo '<a href="?id=' . $row['id'] . '">';
                     echo '<img src="' . $row['location'] . '" alt="photo" /></a>';
                     echo '<div class="description">' . $row['likes_nb'] . ' likes & ' .
-                    $row['comments_nb'] . " comments<br \><br \><b>". $row['name'] . '</b></div>
+                    $row['comments_nb'] . " comments<br \><br \><b>". $row['description'] . '</b></div>
                     </div><a href="?likeid=' . $row['id'] .'"><img src="img/like.png" width="35px" height="40px" class="like"\></a></div>';
                 }
                 $query_all_photo->closeCursor();
@@ -227,7 +271,8 @@ include_once('include/functions_gallerie.php');
                         }
                         else {
                             echo "<li><a href='?page=" . $i . "&photo_per_page=" . $photo_per_page .
-                            "&tri=" . $tri . "&pseudo=" . $_GET['pseudo'] . "'>" . $i . "</a></li>";
+                            "&tri=" . $tri . "&pseudo=" . $_GET['pseudo'] . "&word_plus=" . $_GET['word_plus'] .
+                            "&word_minus=" .$word_minus . "&word_normal=" . $word_normal ."'>" . $i . "</a></li>";
                         }
                     }
                     echo "</ul></div>";
