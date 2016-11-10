@@ -251,7 +251,7 @@ include_once('include/functions_gallerie.php');
                     echo '<a href="?id=' . $row['id'] . '">';
                     echo '<img src="' . $row['location'] . '" alt="photo" /></a>';
                     echo '<div class="description">' . $row['likes_nb'] . ' likes & ' .
-                    $row['comments_nb'] . " comments<br \><br \><b>". $row['description'] . '</b></div>
+                    $row['comments_nb'] . " comments<br \><br><u>" . $row['name'] ."</u><br><br \><b>". $row['description'] . '</b></div>
                     </div><a href="?likeid=' . $row['id'] .'"><img src="img/like.png" width="35px" height="40px" class="like"\></a></div>';
                 }
                 $query_all_photo->closeCursor();
@@ -271,7 +271,7 @@ include_once('include/functions_gallerie.php');
                         }
                         else {
                             echo "<li><a href='?page=" . $i . "&photo_per_page=" . $photo_per_page .
-                            "&tri=" . $tri . "&pseudo=" . $_GET['pseudo'] . "&word_plus=" . $_GET['word_plus'] .
+                            "&tri=" . $_GET['tri'] . "&pseudo=" . $_GET['pseudo'] . "&word_plus=" . $_GET['word_plus'] .
                             "&word_minus=" .$word_minus . "&word_normal=" . $word_normal ."'>" . $i . "</a></li>";
                         }
                     }
