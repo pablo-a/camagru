@@ -111,7 +111,7 @@ if ($nb_var)
 					<form action="suscribe.php" method="post" accept-charset="utf-8">
 						<input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required value=<?php echo '"' . $pseudo . '"'; ?>/>
 						<br />
-						<input type="email" name="mail" id="mail" placeholder="mail" value = <?php echo '"' . $mail . '"'; ?>/>
+						<input type="email" name="mail" id="mail" placeholder="mail" required value = <?php echo '"' . $mail . '"'; ?>/>
 						<br />
 						<input type="password" name="passwd1" id="passwd1" placeholder="mot de passe" pattern=".{6,}"/>
 						<br />

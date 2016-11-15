@@ -11,7 +11,6 @@ window.addEventListener('load', function() {
 
     //mise en place du style des images.
     for (var i = 0; i < images.length; i++) {
-        console.log(images[i].src);
         images[i].style.opacity = 0;
     }
     images[0].style.opacity = 1;
@@ -48,7 +47,6 @@ window.addEventListener('load', function() {
                 images[current_index].style.opacity = 1 - (opacity / 10);
             }
         }
-        console.log(current_index);
     });
 
     next.addEventListener('click', function() {
@@ -69,8 +67,6 @@ window.addEventListener('load', function() {
                 opacity -= 1;
                 images[last_index].style.opacity = opacity / 10;
                 images[current_index].style.opacity = 1 - (opacity / 10);
-                console.log("last : " + images[last_index].style.opacity);
-                console.log("new : " + images[current_index].style.opacity);
             }
         }
     });
