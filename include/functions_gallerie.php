@@ -66,7 +66,10 @@ if (isset($_POST) && extract($_POST) && $comment && isset($_GET['id'])) { // COM
         $user_email = $user->fetch();
         $mail = $user_email['mail'];
         $subject = "Quelqu'un a commente une de vos photos !";
-        $url = "localhost:8080/camagru/gallerie.php?id=" . $_GET['id'];
+        $pattern = "/\/gallerie(.)*/";
+    	$replace = "/";
+        $path = $_SERVER['SERVER_NAME'] . ":8080" . preg_replace( $pattern, $replace, $_SERVER['PHP_SELF']);
+        $url = $path . "gallerie.php?id=" . $_GET['id'];
         $content = "L'utilisateur " . $_SESSION['user_name'];
         $content .= " a commente une de vos photos :\n" . $url;
         mail($mail, $subject, $content);
@@ -94,7 +97,7 @@ else if (isset($_GET['delid']) && !empty($_GET['delid']) && $_SESSION['user_id']
 }
 
 else if (isset($_GET['likeid']) && !empty($_GET['likeid']) && extract($_GET)) { // LIKE
-    
+
     if ($_SESSION['user_id'] != 0) { // utilisateur bien connecte
 
         $check_already_liked = $bdd->prepare("SELECT COUNT(*) AS nb_like from likes WHERE owner = ? AND image = ?");
