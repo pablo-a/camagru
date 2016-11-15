@@ -85,6 +85,16 @@ else if (isset($_GET['delid']) && !empty($_GET['delid']) && $_SESSION['user_id']
         banner_alert("Vous n'etes pas autorise a supprimer cette photo");
     }
     else {
+        //ON SUPPRIME D'ABORD LES COMMENTAIRES LIES A L'IMAGE
+        $delete_comments_relatives = $bdd->prepare("DELETE FROM comment WHERE image_origin = ?");
+        $delete_comments_relatives->execute(array($_GET['delid']));
+        $delete_comments_relatives->closeCursor();
+
+        $delete_likes_relative = $bdd->prepare("DELETE FROM likes WHERE image = ?");
+        $delete_likes_relative->execute(array($_GET['delid']));
+        $delete_likes_relative->closeCursor();
+
+        // ENSUITE ON SUPPRIME L'IMAGE
         $query_delete = $bdd->prepare("DELETE FROM image WHERE id = ?");
         $result_delete = $query_delete->execute(array($_GET['delid']));
         if ($result_delete) {
@@ -93,6 +103,7 @@ else if (isset($_GET['delid']) && !empty($_GET['delid']) && $_SESSION['user_id']
         else {
             banner_alert("Une erreur est survenue, reessayez plus tard.");
         }
+        $query_delete->closeCursor();
     }
 }
 
