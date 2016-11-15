@@ -74,6 +74,10 @@ div.description img {
     clear: both;
 }
 
+
+
+
+
 /* Partie pour le formulaire commentaire */
 
 
@@ -145,4 +149,31 @@ div.center {text-align: center;}
 
 hr	{
 	margin-bottom: 20px;
+}
+
+/* PARTIE POUR LES SINGLE PHOTOS */
+
+.photo_container {
+	margin: 15px auto;
+	text-align: center;
+	overflow: auto;
+}
+
+.comment {
+	width: 30%;
+	margin: 5px auto;
+	padding: 5px;
+	border: 1px solid grey;
+	border-radius: 5px;
+	background-color: white;
+
+}
+
+.comment b {
+	display: inline;
+}
+
+.content {
+	text-align: justify;
+	display: inline-block;
 }

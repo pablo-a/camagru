@@ -93,19 +93,33 @@ if ($nb_var)
 	<head>
 		<title>inscription</title>
 		<script type="text/javascript" src="script/alert.js"></script>
+		<script type="text/javascript" src="script/display_signin.js"></script>
 		<link rel="stylesheet" href="css/alert.css" type="text/css" />
+		<link rel="stylesheet" href="css/header.css" type="text/css" />
+        <link rel="stylesheet" href="css/navbar.css" type="text/css" />
+		<link rel="stylesheet" href="css/signin.css" type="text/css" />
+		<link rel="stylesheet" href="css/suscribe.css" type="text/css" />
 	</head>
 	<body>
-	<form action="suscribe.php" method="post" accept-charset="utf-8">
-		Pseudo : <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required value=<?php echo '"' . $pseudo . '"'; ?>/>
-	<br />
-		Mail : <input type="email" name="mail" id="mail" placeholder="mail" value = <?php echo '"' . $mail . '"'; ?>/>
-	<br />
-		Mot de passe : <input type="password" name="passwd1" id="passwd1" placeholder="mot de passe" pattern=".{6,}"/>
-	<br />
-		Repeter le mdp : <input type="password" name="passwd2" id="passwd2" placeholder="confirmation mot de passe" size="30" pattern=".{6,}"/>
-	<br />
-		<input type="submit" name="submit" id="sub" value="OK" />
-	</form>
+		<?php include_once("include/header.php"); ?>
+        <?php include_once("include/navbar.php"); ?>
+        <div class="body">
+            <?php include_once("include/signin.php"); ?>
+            	<br>
+				<br>
+				<div class="suscribe">
+					<form action="suscribe.php" method="post" accept-charset="utf-8">
+						<input type="text" name="pseudo" id="pseudo" placeholder="pseudo" pattern= ".{3,}" required value=<?php echo '"' . $pseudo . '"'; ?>/>
+						<br />
+						<input type="email" name="mail" id="mail" placeholder="mail" value = <?php echo '"' . $mail . '"'; ?>/>
+						<br />
+						<input type="password" name="passwd1" id="passwd1" placeholder="mot de passe" pattern=".{6,}"/>
+						<br />
+						<input type="password" name="passwd2" id="passwd2" placeholder="confirmation mot de passe" size="30" pattern=".{6,}"/>
+						<br />
+						<input type="submit" name="submit" id="sub" value="OK" />
+					</form>
+				</div>
+		</div>
 	</body>
 </html>
